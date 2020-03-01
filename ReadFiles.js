@@ -17,30 +17,30 @@ const path = require('path')
 //wantPath =  boolean to return the whole path of the files too, true to return whole path, false to only return file
 //inNestedFold = used in recurrive call to determine whether the file is in another file (had to use to make recurrsion work)
 //myArray = an array you put into the function to better use recurrsion (sorry is kinda ugly right now)
-function getFiles (dir, targetFold, wantPath, isinNestedFold, myArray){
+function getFiles (dir, targetFold, wantPath, isinNestedFold){
+    let myArray = [];
     
     //gets the current directory (CD/STEVESCOMPUTER//Desktop) (dir should be "__filename" to work 
     //aka. get the name of the file to return its directory)
-    var currDirectory;
-    if(!isinNestedFold){
-        currDirectory = path.dirname(dir);
-    }
-    else{
+    let currDirectory = path.dirname(dir);
+    
+    //used to help recurrsion
+    if(targetFold == " " && isinNestedFold){
         currDirectory = dir;
     }
 
     //gets all files in the current directory and returns them 
     //fs.readdirsync gets all the files (not the path), and places them in an arrayList
     //(excludes files in folders in the directory ex:myapp folder will return blank)
-    var filesInDirectoryAsAnArray = fs.readdirSync(currDirectory);
+    let filesInDirectoryAsAnArray = fs.readdirSync(currDirectory);
 
     //goes through all files in that directory
     if(targetFold == " "){
-        for (var i in filesInDirectoryAsAnArray){
+        for (let i in filesInDirectoryAsAnArray){
             //will be the file name
-            var filename;
+            let filename;
             //will need this later
-            var firstCharInFile = filesInDirectoryAsAnArray[i].charAt(0);
+            let firstCharInFile = filesInDirectoryAsAnArray[i].charAt(0);
             
             //if want the full path of every file get it, otherwise 
             if(wantPath){
@@ -56,9 +56,10 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold, myArray){
             if (path.isAbsolute(filename) && fs.lstatSync(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i])).isDirectory()){
                 //recurrisve call will put an array in this array
                 
-                nestedArray = [];
+                let nestedArray = [];
                 nestedArray.push(filename);
-                nestedArray.push(getFiles(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i]), " ", true, true, nestedArray));
+                let embeddedArray = getFiles(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i]), " ", true, true);
+                nestedArray.push(embeddedArray);
                 myArray.push(nestedArray);
 
             //will add to the array if the file isnt a dot file and if it actually is a file 
@@ -72,48 +73,12 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold, myArray){
     else{
         
         //Looks for the targeted folder
-        for (var i in filesInDirectoryAsAnArray){
+        for (let i in filesInDirectoryAsAnArray){
 
             //once finds the targeted folder goes through it and returns an rray with every file there (except dot files)
             if(filesInDirectoryAsAnArray[i] == targetFold){
 
-                var targetedDirectory = filesInDirectoryAsAnArray[i];
-                //need to get the directory again and turn all files in it into a list
-                var currDirectoryEmbedded = path.join(path.dirname(dir) + '\\' + targetedDirectory);
-
-                //gets all files in the directory and places them in an array
-                var allFilesInTargetedFolder = fs.readdirSync(currDirectoryEmbedded);
-
-                for(var j in allFilesInTargetedFolder){
-                    //will be the file name
-                    var filename;
-                    //will need this later
-                    var firstCharInFile = allFilesInTargetedFolder[j].charAt(0);
-                    
-                    //if want the full path of every file get it, otherwise 
-                    if(wantPath){
-                        //merges the two strings so that it will be a full path
-                        filename = path.join(currDirectoryEmbedded + '\\' + allFilesInTargetedFolder[j]);
-                    }
-                    else{
-                        filename = allFilesInTargetedFolder[j];
-                    }
-
-                    //checks to see if the file is a directory, if so go in there and return all files in there
-                    //will result in nested arraylist if there are folders in folders------------------------------------------------ currently here
-                    if (path.isAbsolute(filename) && fs.lstatSync(path.join(currDirectoryEmbedded + '\\' + allFilesInTargetedFolder[j])).isDirectory()){
-                        //recurrisve call will put an array in this array
-                        nestedArray = [];
-                        nestedArray.push(filename);
-                        nestedArray.push(getFiles(path.join(currDirectoryEmbedded + '\\' + allFilesInTargetedFolder[j]), " ", true, true, nestedArray));
-                        myArray.push(nestedArray);
-
-                    //will add to the array if the file isnt a dot file and if it actually is a file 
-                    //(checks second part because for some reason readdirsync returns an invisible file that doesnt exist as its last value)
-                    } else if (path.isAbsolute(filename) && firstCharInFile != '.'){
-                        myArray.push(filename);
-                    }
-                }
+               return getFiles(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i]), " ", true, true);
             }
         }
     }
@@ -122,7 +87,14 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold, myArray){
 
 function printTheFiles(arryFromGetFiles){
     for(var i in arryFromGetFiles){
-        console.log(arryFromGetFiles[i]);
+
+        if(Array.isArray(arryFromGetFiles[i])){
+            printTheFiles(arryFromGetFiles[i]);
+        }
+        
+        else{
+            console.log(arryFromGetFiles[i]);
+        }
     }
 }
 
@@ -134,6 +106,7 @@ function printTheFiles(arryFromGetFiles){
 //(nested array if folders in that folder exist)
 function returnAllFilesInDirectory(){
     var FolderArray = getFiles(__filename, "MyApp", true, false, []);
+    console.log('All Files and folders in the Folder MyApp (excluding dot files) \n');
     printTheFiles(FolderArray);
     return FolderArray;
 }
