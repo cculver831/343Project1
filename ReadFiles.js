@@ -56,7 +56,7 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold){
             }
 
             //checks to see if the file is a directory, if so go in there and return all files in there
-            //will result in nested arraylist if there are folders in folders
+            //will result in nested arraylist if there are folders in folders, except dot folders
             if (path.isAbsolute(filename) && fs.lstatSync(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i])).isDirectory() && firstCharInFile != '.'){
                 //recurrisve call will put an array in this array
                 
@@ -89,15 +89,22 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold){
     return myArray;
 }
 
-function printTheFiles(arryFromGetFiles){
-    for(var i in arryFromGetFiles){
+//both prints the files and returns all the files into an array with everything besides the direcroties (includes files in other folders)
+//returns the final array containing all the files (no nested arrays will exist in the final array made the mistake of doing so earlier but corrected it)
+function printTheFilesAndReturnArray(arryFromGetFiles, finalArrayToInsertTo){
 
+    for(let i in arryFromGetFiles){
+
+        //uses recurrsion if there is an array in an array to get the files in the directories
         if(Array.isArray(arryFromGetFiles[i])){
-            printTheFiles(arryFromGetFiles[i]);
+            printTheFilesAndReturnArray(arryFromGetFiles[i], finalArrayToInsertTo);
         }
 
         else{
-            console.log(arryFromGetFiles[i]);
+            if(!fs.lstatSync(arryFromGetFiles[i]).isDirectory()){
+                console.log(arryFromGetFiles[i]);
+                finalArrayToInsertTo.push(arryFromGetFiles[i]);
+            }
         }
     }
 }
@@ -109,11 +116,12 @@ function printTheFiles(arryFromGetFiles){
 //this code will read all files in the MyApp folder (excluding dot files (files starting with a dot '.')) and return them in an array 
 //(nested array if folders in that folder exist)
 function returnAllFilesInDirectory(){
-    var FolderArray = getFiles(__filename, "MyApp", true, false, []);
-    console.log('All Files and folders in the Folder MyApp (excluding dot files) \n');
-    printTheFiles(FolderArray);
-    return FolderArray;
+    let FolderArray = getFiles(__filename, "MyApp", true, false, []);
+    console.log('All Files and folders in the Folder MyApp (excluding dot files/folders) \n');
+    let FinalArray = [];
+    printTheFilesAndReturnArray(FolderArray, FinalArray);
+    return FinalArray;
 }
 
-//this returns the array to be used by other javascript files just put
+//this returns the array to be used by other javascript files just put .ArrayResult After the 
 exports.ArrayResult = returnAllFilesInDirectory();
