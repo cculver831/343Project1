@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 //Steven Centeno
 //completed 2/28/2020       
 
@@ -51,9 +51,13 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold){
                 filename = filesInDirectoryAsAnArray[i];
             }
 
+            if(fs.lstatSync(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i])).isDirectory()){
+                firstCharInFile = path.basename(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i])).charAt(0);
+            }
+
             //checks to see if the file is a directory, if so go in there and return all files in there
             //will result in nested arraylist if there are folders in folders
-            if (path.isAbsolute(filename) && fs.lstatSync(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i])).isDirectory()){
+            if (path.isAbsolute(filename) && fs.lstatSync(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i])).isDirectory() && firstCharInFile != '.'){
                 //recurrisve call will put an array in this array
                 
                 let nestedArray = [];
@@ -91,7 +95,7 @@ function printTheFiles(arryFromGetFiles){
         if(Array.isArray(arryFromGetFiles[i])){
             printTheFiles(arryFromGetFiles[i]);
         }
-        
+
         else{
             console.log(arryFromGetFiles[i]);
         }
@@ -111,5 +115,5 @@ function returnAllFilesInDirectory(){
     return FolderArray;
 }
 
-//make this function equal to a variable to get the array
-returnAllFilesInDirectory();
+//this returns the array to be used by other javascript files just put
+exports.ArrayResult = returnAllFilesInDirectory();
