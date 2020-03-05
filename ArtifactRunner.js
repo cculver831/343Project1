@@ -36,7 +36,6 @@ const path = require('path')
 //         });  
            
 // }
-var FileProcessor = require('./FileProcessor.js');
 
 function getContent(filePath){
     const fs = require('fs')
@@ -50,11 +49,48 @@ function getContent(filePath){
     }
 }
 function CreateArtifact(filePath){
-    var total = 0;
-    for (let index = 0; index < getContent(filePath).length; index++) {
-        total += getContent(filePath).charCodeAt(index);
+    var result = 0;
+    var temp = 0;
+    for (let index = 0; index < filePath.length; index++) {
+      if(index % 4 == 0){
+        temp += (filePath.charCodeAt(index) * 1);
+      }
+      else if(index % 4 == 1){
+        temp += (filePath.charCodeAt(index) * 7);
+      }
+      else if(index % 4 == 2){
+        temp += (filePath.charCodeAt(index) * 3);
+      }
+      else if(index % 4 == 3){
+        temp += (filePath.charCodeAt(index) * 11);
+      }
     }
-    console.log(total);
+    result = "P" + temp % 10000 + "-";
+
+    
+    var stats = fs.statSync(filePath);
+    var fileSizeInBytes = stats["size"];
+    result += "L" + (fileSizeInBytes % 100) + "-";
+
+
+    temp = 0;
+    for (let index = 0; index < getContent(filePath).length; index++) {
+      if(index % 4 == 0){
+        temp += (getContent(filePath).charCodeAt(index) * 1);
+      }
+      else if(index % 4 == 1){
+        temp += (getContent(filePath).charCodeAt(index) * 7);
+      }
+      else if(index % 4 == 2){
+        temp += (getContent(filePath).charCodeAt(index) * 3);
+      }
+      else if(index % 4 == 3){
+        temp += (getContent(filePath).charCodeAt(index) * 11);
+      }
+    }
+    result += "C" + temp % 10000 + ".txt";
+    console.log(result);
+    return result;
 }
 
 CreateArtifact('./MyApp/RIP.txt');
