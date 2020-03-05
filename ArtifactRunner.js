@@ -36,14 +36,25 @@ const path = require('path')
 //         });  
            
 // }
+var FileProcessor = require('./FileProcessor.js');
 
-
-function CreateArtifact(){
-
-    
-
-        for (let index = 0; index < array.length; index++) {
-            const element = array[index];
-            
-        }
+function getContent(filePath){
+    const fs = require('fs')
+  
+    try {
+      const data = fs.readFileSync(filePath, 'utf8')
+      return data
+      
+    } catch (err) {
+      console.error(err)
+    }
 }
+function CreateArtifact(filePath){
+    var total = 0;
+    for (let index = 0; index < getContent(filePath).length; index++) {
+        total += getContent(filePath).charCodeAt(index);
+    }
+    console.log(total);
+}
+
+CreateArtifact('./MyApp/RIP.txt');
