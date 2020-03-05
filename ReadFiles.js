@@ -105,7 +105,6 @@ function printTheFiles(arryFromGetFiles){
 //this code will read all files in the MyApp folder (excluding dot files (files starting with a dot '.')) and return them in an array 
 //(nested array if folders in that folder exist)
 function returnAllFilesInDirectory(){
-    alert();
     var FolderArray = getFiles(__filename, "MyApp", true, false, []);
     console.log('All Files and folders in the Folder MyApp (excluding dot files) \n');
     printTheFiles(FolderArray);
