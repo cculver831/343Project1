@@ -22,5 +22,7 @@ function getContent(filePath){
     console.error(err)
   }
 }
-//test
+
+
+let artifact = require('./ArtifactRunner')('./MyApp/RIP.txt');
 //getContent("C:\\Users\\josep\\Desktop\\TestFile.txt");

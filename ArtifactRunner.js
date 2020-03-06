@@ -91,5 +91,8 @@ function CreateArtifact(filePath){
     //return the result as "P####-L##-C####.txt"
     return result;
 }
-
-CreateArtifact('./MyApp/RIP.txt');
+module.exports = function(FilePath) {
+  return {
+    getArtifact : CreateArtifact(FilePath)
+  };
+};
