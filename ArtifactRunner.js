@@ -60,6 +60,8 @@ function CreateArtifact(filePath){
         temp += (filePath.charCodeAt(index) * 11);
       }
     }
+    //Else if statements habdle the number values to see if it is less than 4 digits characters to add in extra zeros before the
+    //number of the Path
     if(temp <10){
       result = "P000" + temp + "-";
     }
@@ -89,6 +91,9 @@ function CreateArtifact(filePath){
     //values for the part of in the returned artifact
     var stats = fs.statSync(filePath);
     var fileSizeInBytes = stats["size"];
+
+    //Else if statements habdle the number values to see if it is less than 4 digits characters to add in extra zeros before the
+    //number of the File size in byte
     if(fileSizeInBytes < 10){
       result += "L0" + (fileSizeInBytes % 100) + "-";
     }
@@ -120,7 +125,8 @@ function CreateArtifact(filePath){
         temp += (getContent(filePath).charCodeAt(index) * 11);
       }
     }
-
+    //Else if statements habdle the number values to see if it is less than 4 digits characters to add in extra zeros before the
+    //number of the Content
     if(temp <10){
       result += "C000" + temp % 10000 +  ".txt";
     }
@@ -132,22 +138,24 @@ function CreateArtifact(filePath){
     }
     else{
       if(temp % 10000 < 10){
-        result = "C000" + temp % 10000 + "-";
+        result += "C000" + temp % 10000 + ".txt";
       }
       else if(temp % 10000 < 100){
-        result = "C00" + temp % 10000 + "-";
+        result += "C00" + temp % 10000 + ".txt";
       }
       else if(temp % 10000 < 1000 ){
-        result = "C0" + temp % 10000+ "-";
+        result += "C0" + temp % 10000+ ".txt";
       }
       else{
-        result = "C" + temp % 10000 + "-";
+        result += "C" + temp % 10000 + ".txt";
       }
     }
     console.log(result);
     //return the result as "P####-L##-C####.txt"
     return result;
 }
+
+// export the function through node.jd to take in an argument for file path and return a string accordingly
 module.exports = function(FilePath) {
   return {
     getArtifact : CreateArtifact(FilePath)
