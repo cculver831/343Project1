@@ -1,66 +1,53 @@
-//Copies Content into new file using targets
+//This JS Copies files into a new folder, as well as saving a manifest with the file information
 
+//gets libraries and variables that are outside of this script local scope
 const path = require('path')
 const fs = require('fs')
 let ReadFiles = require('./ReadFiles');
 ReadFiles.ArrayResult
-
-
 var len = ReadFiles.ArrayResult.length
-//testing
-console.log("Before loop")
-console.log(ReadFiles.ArrayResult.toString)
-console.log("After Loop")
 
-//create manifest file
-fs.appendFile("Manifest.txt", '', function (err) {
-    if (err) throw err;
-    console.log('Saved!');
-  });
+//creates manifest file
+fs.appendFile(path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + "Manifest.txt"), "", function (err) {
+//throws error if could not append file  
+if (err) throw err;
+});
 
-//goes through array of file paths and copies into temp
+//goes through array of file paths and copies them into temp
 for(var i = 0; i < len; i++){
-    console.log(String(ReadFiles.ArrayResult[i]))
-    //copy file to folder
-    fs.copyFile(ReadFiles.ArrayResult[i], path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + path.basename(ReadFiles.ArrayResult[i])), (err) => {
-        if (err) throw err;
-        console.log('File was copied to destination');
-      });
-      
-    //append information into the manifest
-    var fileInformation = "CLP NAME" + "=" + ReadFiles.ArrayResult[i] + "\n";
-    //appends info into files (file destination, content, error)
-    fs.appendFile("Manifest.txt", fileInformation, function (err) {
-        if (err) throw err;
-        console.log('Manifest Updated!');
-      });
+
+
+    //gets copy of script to use function to get CPL
+  let artifact = require('./ArtifactRunner')(String(ReadFiles.ArrayResult[i]));
+  //copy file to folder
+  fs.copyFile(ReadFiles.ArrayResult[i], path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + artifact.getArtifact), (err) => {
+    //throws error if could not copy file to destination  
+  if (err) throw err;
+  });
+  //MANIFEST
+  //create file info that will be stored in manifest
+  var fileInformation = artifact.getArtifact + "=" + ReadFiles.ArrayResult[i] + "\n";
+  //appends info into files (file destination, content, error)
+  fs.appendFile(path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + "Manifest.txt"), fileInformation, function (err) {
+  if (err) throw err;
+  });
 }
 //append Date and time to manifest
 var d = new Date();
-fs.appendFile("Manifest.txt", d, function (err) {
-    if (err) throw err;
-    console.log('Manifest Updated!');
-  });
-
-//create and append command line on top of manifest.txt
-//loop-
-//copy file into temp(fs.copyfile)
-//append "CPL name" + "=" + FolderDestination onto manifest
-
-//after loop, date and time
+fs.appendFile(path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + "Manifest.txt"), d, function (err) {
+  if (err) throw err;
+});
 
 
-
-
-
+//gets content of a file due to its path
 function getContent(filePath){
+  try {
+    //read data from file
+    const data = fs.readFileSync(filePath, 'utf8')
+    return data;
     
-    try {
-      const data = fs.readFileSync(filePath, 'utf8')
-      return data;
-      
-    } catch (err) {
-      console.error(err);
-    }
+  } catch (err) {
+    console.error(err);
+  }
 }
 
