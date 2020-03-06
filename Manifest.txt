@@ -1,0 +1,6 @@
+CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\Losers.txt
+CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\REEEEE\I.txt
+CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\REEEEE\YOU SUCK.txt
+CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\theBigSad.txt
+CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\RIP.txt
+Fri Mar 06 2020 13:36:31 GMT-0800 (Pacific Standard Time)
