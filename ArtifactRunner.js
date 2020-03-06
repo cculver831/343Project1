@@ -60,13 +60,47 @@ function CreateArtifact(filePath){
         temp += (filePath.charCodeAt(index) * 11);
       }
     }
-    result = "P" + temp % 10000 + "-";
+    if(temp <10){
+      result = "P000" + temp + "-";
+    }
+    else if(temp <100){
+      result = "P00" + temp + "-";
+    }
+    else if( temp < 1000 ){
+      result = "P0" + temp+ "-";
+    }
+    else{
+      
+      if(temp % 10000 <10){
+        result = "P000" + temp % 10000 + "-";
+      }
+      else if(temp % 10000 <100){
+        result = "P00" + temp % 10000 + "-";
+      }
+      else if(temp % 10000 < 1000 ){
+        result = "P0" + temp % 10000+ "-";
+      }
+      else{
+        result = "P" + temp % 10000 + "-";
+      }
+    }
 
     //handle calulation for the L/file size of the artifact. The returned values is then modded by 100 to return the 2 most right
     //values for the part of in the returned artifact
     var stats = fs.statSync(filePath);
     var fileSizeInBytes = stats["size"];
-    result += "L" + (fileSizeInBytes % 100) + "-";
+    if(fileSizeInBytes < 10){
+      result += "L0" + (fileSizeInBytes % 100) + "-";
+    }
+    else{
+      if(fileSizeInBytes % 100 < 10){
+        result += "L0" + (fileSizeInBytes % 100) + "-";
+      }
+      else{
+        result += "L" + (fileSizeInBytes % 100) + "-";
+      }     
+    }
+    
 
     //calulation for the file content. Use the string for file path and calculate each character ascii value with the mulitplication
     //"loop" of 1,7,3,11. The values are all added up afterward and modded by 10000 to get the last 4 values for the C/content part
@@ -86,7 +120,30 @@ function CreateArtifact(filePath){
         temp += (getContent(filePath).charCodeAt(index) * 11);
       }
     }
-    result += "C" + temp % 10000 + ".txt";
+
+    if(temp <10){
+      result += "C000" + temp % 10000 +  ".txt";
+    }
+    else if(temp <100){
+      result += "C00" + temp % 10000 +  ".txt";
+    }
+    else if(temp <1000){
+      result += "C0" + temp % 10000 +  ".txt";
+    }
+    else{
+      if(temp % 10000 < 10){
+        result = "C000" + temp % 10000 + "-";
+      }
+      else if(temp % 10000 < 100){
+        result = "C00" + temp % 10000 + "-";
+      }
+      else if(temp % 10000 < 1000 ){
+        result = "C0" + temp % 10000+ "-";
+      }
+      else{
+        result = "C" + temp % 10000 + "-";
+      }
+    }
     console.log(result);
     //return the result as "P####-L##-C####.txt"
     return result;

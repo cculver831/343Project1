@@ -24,5 +24,6 @@ function getContent(filePath){
 }
 
 
-let artifact = require('./ArtifactRunner')('./MyApp/RIP.txt');
+let artifact = require('./ArtifactRunner')('./MyApp/.rrrreeee.txt');
+
 //getContent("C:\\Users\\josep\\Desktop\\TestFile.txt");
