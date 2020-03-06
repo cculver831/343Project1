@@ -123,5 +123,31 @@ function returnAllFilesInDirectory(){
     return FinalArray;
 }
 
+//Reads the current highest number Manifest Files in The Repository
+function getLatestManifestNum(){
+
+    //current filename
+    let currDir = path.dirname(__filename);
+    
+    //goes to the temp directory directly (change the temp into any directory name if you change the name)
+    let manifestDir = path.join(currDir + '\\' + 'MyApp' + '\\' + '.Repository' + '\\' + 'Temp');
+
+    //gets an array of everything in the path
+    let manifestFilesInDir = fs.readdirSync(manifestDir);
+
+    let latestManiFile = 0;
+    for(let i in manifestFilesInDir){
+
+        let filename = manifestFilesInDir[i];
+        //manifest files names .man<int>.rc accordingly
+        if(filename.length > 4 && path.basename(filename.substring(0,4)) == '.man'){
+            latestManiFile = filename.charAt(4);
+        }
+    }
+    return latestManiFile;
+    
+}
+
 //this returns the array to be used by other javascript files just put .ArrayResult After the 
 exports.ArrayResult = returnAllFilesInDirectory();
+exports.latestManiFile = getLatestManifestNum();
