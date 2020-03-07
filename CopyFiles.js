@@ -40,6 +40,7 @@ function copyFiles(sourceFolder,targetFolder)
   fs.appendFile(location, d + "\n", function (err) {
     if (err) throw err;
   });
+    document.write("The folder from source:  " + sourceFolder + " hase been copied to destination: " targetFolder);
 }
 
 module.exports = function(sourceFolder,targetFolder) {
