@@ -52,7 +52,7 @@ function copyFiles(sourceFolder,targetFolder)
 
 module.exports = function(SourceFolder,TargetFolder) {
   return {
-      ArrayResult : copyFiles(SourceFolder,TargetFolder)
+      Result : copyFiles(SourceFolder,TargetFolder)
   };
 };
 
