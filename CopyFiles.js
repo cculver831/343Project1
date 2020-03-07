@@ -9,7 +9,7 @@ var len = ReadFiles.ArrayResult.length
 
 //creates manifest file
 var location = path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + ".man" + String(Number(ReadFiles.latestManiFile) + 1) + ".rc" )
-fs.appendFile(location, "Commit " + (Number(ReadFiles.latestManiFile) + 1)  + ".source:\n", function (err) {
+fs.appendFile(location, "Commit " + ((Number(ReadFiles.latestManiFile)) + 1)  + ".source:\n", function (err) {
 //throws error if could not append file  
 if (err) throw err;
 });

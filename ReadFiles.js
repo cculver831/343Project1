@@ -139,9 +139,13 @@ function getLatestManifestNum(){
     for(let i in manifestFilesInDir){
 
         let filename = manifestFilesInDir[i];
-        //manifest files names .man<int>.rc accordingly
-        if(filename.length > 4 && path.basename(filename.substring(0,4)) == '.man'){
-            latestManiFile = filename.charAt(4);
+        //manifest files names .man<int>.rc accordingly, this lists the latest (biggest) num of mainifest files
+        if(filename.length > 4 && path.basename(filename.substring(0,4)) == '.man' 
+        && Number.parseInt(filename.substring(4, filename.indexOf('.', 4) + 1)) > latestManiFile){
+
+            //get the number in the manifest file
+            let num = filename.substring(4, filename.indexOf('.', 4) + 1);
+            latestManiFile = Number.parseInt(num) * 1;
         }
     }
     console.log(latestManiFile);
