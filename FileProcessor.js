@@ -23,6 +23,7 @@ function getContent(filePath){
   }
 }
 
-let copyFiles = require('./CopyFiles')('D:\\343 Project\\MyApp','D:\\343 Project\\MyApp');
+
+let copyFiles = require('./CopyFiles')(path.join(path.dirname(__filename) + '\\' + 'MyApp'),path.join(path.dirname(__filename) + '\\' + 'MyApp'));
 
 //getContent("C:\\Users\\josep\\Desktop\\TestFile.txt");
