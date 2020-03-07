@@ -5,12 +5,21 @@ function copyFiles(sourceFolder,targetFolder)
 {
   const path = require('path')
   const fs = require('fs')
+  var dir = sourceFolder + '\\.Temp';
+
+  if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+  }
   let ReadFiles = require('./ReadFiles')(sourceFolder);
   
   var len = ReadFiles.ArrayResult.length
   
   //creates manifest file
   
+
+
+
+
   var location = path.join(targetFolder + "\\"  + ".Temp" + "\\" + ".man" + String(Number(ReadFiles.latestManiFile) + 1) + ".rc" )
   fs.appendFile(location, "Commit " + ((Number(ReadFiles.latestManiFile)) + 1)  + ".source:\n", function (err) {
   //throws error if could not append file  
@@ -44,7 +53,7 @@ function copyFiles(sourceFolder,targetFolder)
 
 module.exports = function(sourceFolder,targetFolder) {
   return {
-      ArrayResult : copyFiles(sourceFolder,targetFolder);
+      ArrayResult : copyFiles(sourceFolder,targetFolder)
   };
 };
 

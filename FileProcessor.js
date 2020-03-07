@@ -23,7 +23,6 @@ function getContent(filePath){
   }
 }
 
-
-let artifact = require('./ArtifactRunner')('./MyApp/.rrrreeee.txt');
+let copyFiles = require('./CopyFiles')('D:\\343 Project\\MyApp')('D:\\343 Project\\MyApp\\.Temp');
 
 //getContent("C:\\Users\\josep\\Desktop\\TestFile.txt");
