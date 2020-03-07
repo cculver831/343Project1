@@ -8,7 +8,8 @@ ReadFiles.ArrayResult
 var len = ReadFiles.ArrayResult.length
 
 //creates manifest file
-fs.appendFile(path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + "Manifest.txt"), "", function (err) {
+var location = path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + ".man" + String(Number(ReadFiles.latestManiFile) + 1) + ".rc" )
+fs.appendFile(location, "Commit " + (Number(ReadFiles.latestManiFile) + 1)  + ".source:\n", function (err) {
 //throws error if could not append file  
 if (err) throw err;
 });
@@ -28,13 +29,13 @@ for(var i = 0; i < len; i++){
   //create file info that will be stored in manifest
   var fileInformation = artifact.getArtifact + "=" + ReadFiles.ArrayResult[i] + "\n";
   //appends info into files (file destination, content, error)
-  fs.appendFile(path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + "Manifest.txt"), fileInformation, function (err) {
+  fs.appendFile(location, fileInformation, function (err) {
   if (err) throw err;
   });
 }
 //append Date and time to manifest
 var d = new Date();
-fs.appendFile(path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + "Manifest.txt"), d, function (err) {
+fs.appendFile(location, d + "\n", function (err) {
   if (err) throw err;
 });
 
