@@ -6,13 +6,15 @@
 
     <title>Team Succes VSC</title>
       <!-- Call Read/Copy/ArtifcatIDScript Here -->
-       <script type = "text/javascript" src="CopyFolder.js"></script>
-      <p id="demo"></p>
+       <script type = "text/javascript" src="CopyFiles.js"></script>
+      <script type = "text/javascript" src= "ReadFiles.js"></script>
+        <script type = "text/javascript" src="ArtifactRunner.js"></script>
   </head>
 
   <body>
       <!-- Script for user input -->
       <script>
+          
           // Script for asking for user info (source path)
       var sourceFolder = window.prompt("Please enter the Source File Path:");
           document.write("Source Folder Location set: " + sourceFolder);
@@ -20,64 +22,12 @@
       <script>
           // Script asks user for Target folder Destination
           var targetFolder = window.prompt("Please enter the Target Folder Destination");
-           document.write("Destination set: " + targetFolder);
+           document.write("\n Destination set: " + targetFolder);
       </script>
-   
 <!-- Runs External Scripts in Package (i.e. Copy foler, read folder, ArtifactID checksum) -->
-       <script src = "CopyFiles.js">
-         //  if(targetFolder != null && sourceFolder != null)
-const path = require('path')
-const fs = require('fs')
-let ReadFiles = require('./ReadFiles');
-ReadFiles.ArrayResult
-var len = ReadFiles.ArrayResult.length
-
-//creates manifest file
-var location = path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + ".man" + String(Number(ReadFiles.latestManiFile) + 1) + ".rc" )
-fs.appendFile(location, "Commit " + (Number(ReadFiles.latestManiFile) + 1)  + ".source:\n", function (err) {
-//throws error if could not append file  
-if (err) throw err;
-});
-
-//goes through array of file paths and copies them into temp
-for(var i = 0; i < len; i++){
-
-
-    //gets copy of script to use function to get CPL
-  let artifact = require('./ArtifactRunner')(String(ReadFiles.ArrayResult[i]));
-  //copy file to folder
-  fs.copyFile(ReadFiles.ArrayResult[i], path.join(path.dirname(__filename) + '\\' + 'MyApp' + '\\' + ".Repository" + "\\"  + "Temp" + "\\" + artifact.getArtifact), (err) => {
-    //throws error if could not copy file to destination  
-  if (err) throw err;
-  });
-  //MANIFEST
-  //create file info that will be stored in manifest
-  var fileInformation = artifact.getArtifact + "=" + ReadFiles.ArrayResult[i] + "\n";
-  //appends info into files (file destination, content, error)
-  fs.appendFile(location, fileInformation, function (err) {
-  if (err) throw err;
-  });
-}
-//append Date and time to manifest
-var d = new Date();
-fs.appendFile(location, d + "\n", function (err) {
-  if (err) throw err;
-});
-
-
-//gets content of a file due to its path
-function getContent(filePath){
-  try {
-    //read data from file
-    const data = fs.readFileSync(filePath, 'utf8')
-    return data;
-    
-  } catch (err) {
-    console.error(err);
-  }
-}
      
-      </script> 
-      
+<script>
+ function copyFiles(sourceFolder,targetFolder);
+      </script>
   </body>
 </html>
