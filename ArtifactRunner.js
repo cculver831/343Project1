@@ -4,22 +4,6 @@ const path = require('path')
 //completed 03/04/2020
 
 
-//     ***Chloe please take this***
-// var http = require('http');
-// var fs = require('fs');
-// const PORT=8080; 
-// //go to http://localhost:8080
-// fs.readFile('./343ProjectInterface.html', function (err, html) {
-//     if (err) throw err;    
-
-//     http.createServer(function(request, response) {  
-//         response.writeHeader(200, {"Content-Type": "text/html"});  
-//         response.write(html);  
-//         response.end();  
-//     }).listen(PORT);
-// });
-
-
 
 //function to get the content of a file from filepath
 function getContent(filePath){
