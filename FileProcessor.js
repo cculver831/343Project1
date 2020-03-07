@@ -23,6 +23,6 @@ function getContent(filePath){
   }
 }
 
-let copyFiles = require('./CopyFiles')('D:\\343 Project\\MyApp')('D:\\343 Project\\MyApp\\.Temp');
+let copyFiles = require('./CopyFiles')('D:\\343 Project\\MyApp','D:\\343 Project\\MyApp');
 
 //getContent("C:\\Users\\josep\\Desktop\\TestFile.txt");

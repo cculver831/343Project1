@@ -5,20 +5,18 @@ function copyFiles(sourceFolder,targetFolder)
 {
   const path = require('path')
   const fs = require('fs')
-  var dir = sourceFolder + '\\.Temp';
+  var dir =  path.join(targetFolder + '\\' +'.Temp');
 
   if (!fs.existsSync(dir)){
       fs.mkdirSync(dir);
   }
+  console.log("The folder from source:  " + sourceFolder + " hase been copied to destination: " + targetFolder);
   let ReadFiles = require('./ReadFiles')(sourceFolder);
-  
-  var len = ReadFiles.ArrayResult.length
+  console.log(ReadFiles.ArrayResult);
+  var len = ReadFiles.ArrayResult.length;
   
   //creates manifest file
   
-
-
-
 
   var location = path.join(targetFolder + "\\"  + ".Temp" + "\\" + ".man" + String(Number(ReadFiles.latestManiFile) + 1) + ".rc" )
   fs.appendFile(location, "Commit " + ((Number(ReadFiles.latestManiFile)) + 1)  + ".source:\n", function (err) {
@@ -49,12 +47,12 @@ function copyFiles(sourceFolder,targetFolder)
   fs.appendFile(location, d + "\n", function (err) {
     if (err) throw err;
   });
-    document.write("The folder from source:  " + sourceFolder + " hase been copied to destination: " targetFolder);
+    //document.write("The folder from source:  " + sourceFolder + " hase been copied to destination: " + targetFolder);
 }
 
-module.exports = function(sourceFolder,targetFolder) {
+module.exports = function(SourceFolder,TargetFolder) {
   return {
-      ArrayResult : copyFiles(sourceFolder,targetFolder)
+      ArrayResult : copyFiles(SourceFolder,TargetFolder)
   };
 };
 
