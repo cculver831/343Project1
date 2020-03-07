@@ -5,7 +5,7 @@ function copyFiles(sourceFolder,targetFolder)
 {
   const path = require('path')
   const fs = require('fs')
-  let ReadFiles = require('./ReadFiles');
+  let ReadFiles = require('./ReadFiles')(sourceFolder);
   
   var len = ReadFiles.ArrayResult.length
   
@@ -42,6 +42,11 @@ function copyFiles(sourceFolder,targetFolder)
   });
 }
 
+module.exports = function(sourceFolder,targetFolder) {
+  return {
+      ArrayResult : copyFiles(sourceFolder,targetFolder);
+  };
+};
 
 
 //gets content of a file due to its path
