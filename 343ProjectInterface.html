@@ -4,27 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>SUCCESS VERSION CONTROL SYSTEM</title>
+    <title>Team Succes VSC</title>
+      <!-- Call Read/Copy/ArtifcatIDScript Here -->
+       <script type = "text/javascript" src="CopyFolder.js"></script>
+      <p id="demo"></p>
   </head>
 
   <body>
-    <form method="post" enctype="multipart/form-data">
-        <!-- Upload Files button -->
- <input type="file" name="files[]" multiple />
-        <!-- submit file button -->
-  <input type="submit" value="Upload File" name="submit" />
-</form>
-      
-      <!-- Call Create Folder Method here -->
-      
-      <script src="ReadFiles.js"></script>
-      <!-- Call Read Folder Script Here -->
-      <script type="text/javascript" src="ArtifactRunner.js"></script>
-      <!-- Call Copy Folder Script Here -->
-      
-      
-      <!-- Call artifact ID Script here -->
-      
+      <!-- Script for user input -->
+      <script>
+          // Script for asking for user info (source path)
+      var sourceFolder = window.prompt("Please enter the Source File Path:");
+          document.write("Source Folder Location set: " + sourceFolder);
+      </script>
+      <script>
+          // Script asks user for Target folder Destination
+          var targetFolder = window.prompt("Please enter the Target Folder Destination");
+           document.write("Destination set: " + targetFolder);
+      </script>
+   
+<!-- Runs External Scripts in Package (i.e. Copy foler, read folder, ArtifactID checksum) -->
+       <script src = "CopyFiles.js">
+         //  if(targetFolder != null && sourceFolder != null)
+               
+      </script> 
       
   </body>
 </html>
