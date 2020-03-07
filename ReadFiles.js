@@ -14,20 +14,14 @@ const path = require('path');
 //ONLY IF THERE ARE FOLDERS IN FOLDERS IN THIS DIRECTORY
 
 // dir = directory as a string, targetFold = name of target folder (only look in this one) as a string " " if no target
-//wantPath =  boolean to return the whole path of the files too, true to return whole path, false to only return file
-//inNestedFold = used in recurrive call to determine whether the file is in another file (had to use to make recurrsion work)
-//myArray = an array you put into the function to better use recurrsion (sorry is kinda ugly right now)
-function getFiles (dir, targetFold, wantPath, isinNestedFold){
+//wantPath =  boolean to return the full path of the files too, true to return whole path, false to only return file
+//targetFold = the folder that you would want to target in the directory you give [(" ") if you want everything in that directory]
+function getFiles (dir, targetFold, wantPath){
     let myArray = [];
     
     //gets the current directory (CD/STEVESCOMPUTER//Desktop) (dir should be "__filename" to work 
     //aka. get the name of the file to return its directory)
-    let currDirectory = path.dirname(dir);
-    
-    //used to help recurrsion
-    if(targetFold == " " && isinNestedFold){
-        currDirectory = dir;
-    }
+    let currDirectory = dir;
 
     //gets all files in the current directory and returns them 
     //fs.readdirsync gets all the files (not the path), and places them in an arrayList
@@ -62,7 +56,7 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold){
                 
                 let nestedArray = [];
                 nestedArray.push(filename);
-                let embeddedArray = getFiles(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i]), " ", true, true);
+                let embeddedArray = getFiles(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i]), " ", true);
                 nestedArray.push(embeddedArray);
                 myArray.push(nestedArray);
 
@@ -82,7 +76,7 @@ function getFiles (dir, targetFold, wantPath, isinNestedFold){
             //once finds the targeted folder goes through it and returns an rray with every file there (except dot files)
             if(filesInDirectoryAsAnArray[i] == targetFold){
 
-               return getFiles(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i]), " ", true, true);
+               return getFiles(path.join(currDirectory + '\\' + filesInDirectoryAsAnArray[i]), " ", true);
             }
         }
     }
@@ -115,8 +109,8 @@ function printTheFilesAndReturnArray(arryFromGetFiles, finalArrayToInsertTo){
 //read documentation in full if you want to mess with full file paths, but as of now everything is preset so that the following will happen:
 //this code will read all files in the MyApp folder (excluding dot files (files starting with a dot '.')) and return them in an array 
 //(nested array if folders in that folder exist)
-function returnAllFilesInDirectory(){
-    let FolderArray = getFiles(__filename, "MyApp", true, false, []);
+function returnAllFilesInDirectory(userGivenPath){
+    let FolderArray = getFiles(userGivenPath, " ", true);
     console.log('All Files and folders in the Folder MyApp (excluding dot files/folders) \n');
     let FinalArray = [];
     printTheFilesAndReturnArray(FolderArray, FinalArray);
@@ -124,13 +118,10 @@ function returnAllFilesInDirectory(){
 }
 
 //Reads the current highest number Manifest Files in The Repository
-function getLatestManifestNum(){
-
-    //current filename
-    let currDir = path.dirname(__filename);
+function getLatestManifestNum(userGivenPath){
     
     //goes to the temp directory directly (change the temp into any directory name if you change the name)
-    let manifestDir = path.join(currDir + '\\' + 'MyApp' + '\\' + '.Repository' + '\\' + 'Temp');
+    let manifestDir = path.join(userGivenPath + '\\' + '.Temp');
 
     //gets an array of everything in the path
     let manifestFilesInDir = fs.readdirSync(manifestDir);
@@ -153,6 +144,19 @@ function getLatestManifestNum(){
     
 }
 
-//this returns the array to be used by other javascript files just put .ArrayResult After the 
-exports.ArrayResult = returnAllFilesInDirectory();
-exports.latestManiFile = getLatestManifestNum();
+
+//this returns the array to be used by other javascript files 
+//user has to give full path of the folder
+module.exports = function(FilePath) {
+    return {
+        ArrayResult : returnAllFilesInDirectory(FilePath)
+    };
+};
+
+//returns the biggest number in the manifest files that is to be used by other javascript functions
+//user has to give full path of the folder
+module.exports = function(FilePath) {
+    return {
+        latestManiFile : getLatestManifestNum(FilePath)
+    };
+};
