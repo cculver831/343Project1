@@ -149,14 +149,7 @@ function getLatestManifestNum(userGivenPath){
 //user has to give full path of the folder
 module.exports = function(FilePath) {
     return {
-        ArrayResult : returnAllFilesInDirectory(FilePath)
-    };
-};
-
-//returns the biggest number in the manifest files that is to be used by other javascript functions
-//user has to give full path of the folder
-module.exports = function(FilePath) {
-    return {
+        ArrayResult : returnAllFilesInDirectory(FilePath),
         latestManiFile : getLatestManifestNum(FilePath)
     };
 };
