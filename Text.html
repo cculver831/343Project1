@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+
+<p>
+        <script data-main = "scripts/main" src = "scripts/require.js"></script>
+</p>
+    
+    <script>
+        var sourceFolder = window.prompt("Enter the source file Path: ");
+        var targetFolder = window.prompt("Enter the Target folder Path: ");
+        let copyFiles = require('./Library')(sourceFolder,targetFolder);
+        copyFiles.Result;
+                                                                  
+      </script>
+</body>
+</html>

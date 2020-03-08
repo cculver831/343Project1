@@ -6,28 +6,24 @@
 
     <title>Team Succes VSC</title>
       <!-- Call Read/Copy/ArtifcatIDScript Here -->
-       <script type = "text/javascript" src="CopyFiles.js"></script>
       <script type = "text/javascript" src= "ReadFiles.js"></script>
         <script type = "text/javascript" src="ArtifactRunner.js"></script>
+      
   </head>
 
   <body>
-      <!-- Script for user input -->
       <script>
-          
-          // Script for asking for user info (source path)
-      var sourceFolder = window.prompt("Please enter the Source File Path:");
-          document.write("Source Folder Location set: " + sourceFolder);
+      
+      var sfolder = window.prompt("Enter start folder");
+      var tfolder = window.prompt("Enter end folder";)
+
       </script>
+    <button onClick="test(sfolder)"> Test</button>
       <script>
-          // Script asks user for Target folder Destination
-          var targetFolder = window.prompt("Please enter the Target Folder Destination");
-           document.write("\n Destination set: " + targetFolder);
+
       </script>
-<!-- Runs External Scripts in Package (i.e. Copy foler, read folder, ArtifactID checksum) -->
-     
-<script>
- function copyFiles(sourceFolder,targetFolder);
-      </script>
+      
+                
   </body>
 </html>
+
