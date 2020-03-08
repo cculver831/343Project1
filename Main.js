@@ -12,12 +12,7 @@ rl.question("Welcome to Team Success VCS!! Please enter the path of the Source F
         
         let copyFiles = require('./CopyFiles')(sourceFolder,targetFolder);
         copyFiles.Result;
-        rl.close();
-    });
-});
-
-rl.on("close", function() {
+        console.log("Congratulations! You're repo was a success. Check your Target Folder to see what's happened");  
     
-    console.log("Congratulations! You're repo was a success. Check your Target Folder to see what's happened");  
-    process.exit(0);
+    });
 });

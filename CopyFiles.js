@@ -11,14 +11,14 @@ function copyFiles(sourceFolder,targetFolder)
       fs.mkdirSync(dir);
   }
   console.log("The folder from source:  " + sourceFolder + " hase been copied to destination: " + targetFolder);
-  let ReadFiles = require('./ReadFiles')(sourceFolder);
+  let ReadFiles = require('./ReadFiles')(String(sourceFolder));
   console.log(ReadFiles.ArrayResult);
   var len = ReadFiles.ArrayResult.length;
   
   //creates manifest file
   
 
-  var location = path.join(targetFolder + "\\"  + ".Temp" + "\\" + ".man" + String(Number(ReadFiles.latestManiFile) + 1) + ".rc" )
+  var location = path.join(String(targetFolder) + "\\"  + ".Temp" + "\\" + ".man" + String(Number(ReadFiles.latestManiFile) + 1) + ".rc" )
   fs.appendFile(location, "Commit " + ((Number(ReadFiles.latestManiFile)) + 1)  + ".source:\n", function (err) {
   //throws error if could not append file  
   if (err) throw err;
@@ -30,7 +30,7 @@ function copyFiles(sourceFolder,targetFolder)
     //gets copy of script to use function to get CPL
     let artifact = require('./ArtifactRunner')(String(ReadFiles.ArrayResult[i]));
     //copy file to folder
-    fs.copyFile(ReadFiles.ArrayResult[i], path.join(targetFolder + "\\"  + ".Temp" + "\\" + artifact.getArtifact), (err) => {
+    fs.copyFile(String(ReadFiles.ArrayResult[i]), path.join(String(targetFolder) + "\\"  + ".Temp" + "\\" + artifact.getArtifact), (err) => {
       //throws error if could not copy file to destination  
     if (err) throw err;
     });
@@ -48,24 +48,15 @@ function copyFiles(sourceFolder,targetFolder)
     if (err) throw err;
   });
     //document.write("The folder from source:  " + sourceFolder + " hase been copied to destination: " + targetFolder);
+    
 }
 
-// module.exports = function(SourceFolder,TargetFolder) {
-//   return {
-//       Result : copyFiles(SourceFolder,TargetFolder)
-//   };
-// };
-
-
-define(function (SourceFolder, TargetFolder, module) {
-
-  module.exports = function(SourceFolder,TargetFolder){
-    return {
-           Result : copyFiles(SourceFolder,TargetFolder)
-       };
+module.exports = function(SourceFolder,TargetFolder) {
+  return {
+      Result : copyFiles(SourceFolder,TargetFolder)
   };
+};
 
-});
 
 //gets content of a file due to its path
 function getContent(filePath){
