@@ -15,4 +15,12 @@ Sample Invocation & Results:(Type x, expect y)
 Features: 
 
 Known Bugs:
+<<<<<<< HEAD
      
+=======
+    10 commits total for 
+
+Instructions: To make this work: Save anything you want to make a respository of in the MyApp folder. 
+	      If new folders/ files appear DONT DELETE THEM, also dont delete anything in this folder, 
+	      everything is crucial in order to work.
+>>>>>>> parent of 05755e3... updating readme file
