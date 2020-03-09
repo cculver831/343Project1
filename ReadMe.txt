@@ -16,11 +16,18 @@ Features:
 
 Known Bugs:
 <<<<<<< HEAD
+<<<<<<< HEAD
      
 =======
+=======
+>>>>>>> parent of 05755e3... updating readme file
     10 commits total for 
 
 Instructions: To make this work: Save anything you want to make a respository of in the MyApp folder. 
 	      If new folders/ files appear DONT DELETE THEM, also dont delete anything in this folder, 
+<<<<<<< HEAD
+	      everything is crucial in order to work.
+>>>>>>> parent of 05755e3... updating readme file
+=======
 	      everything is crucial in order to work.
 >>>>>>> parent of 05755e3... updating readme file
