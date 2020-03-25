@@ -123,6 +123,12 @@ function getLatestManifestNum(userGivenPath){
     //goes to the temp directory directly (change the temp into any directory name if you change the name)
     let manifestDir = path.join(userGivenPath + '\\' + '.Temp');
 
+    //if the temp file does not already exist, it will not check for it, this is to avoid creating a new temp file when looking through
+    //the source file
+    if (!fs.existsSync(manifestDir)){
+        return 0;
+    }
+
     //gets an array of everything in the path
     let manifestFilesInDir = fs.readdirSync(manifestDir);
 
