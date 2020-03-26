@@ -111,7 +111,6 @@ function printTheFilesAndReturnArray(arryFromGetFiles, finalArrayToInsertTo){
 //(nested array if folders in that folder exist)
 function returnAllFilesInDirectory(userGivenPath){
     let FolderArray = getFiles(userGivenPath, " ", true);
-    console.log('All Files and folders in the Folder MyApp (excluding dot files/folders) \n');
     let FinalArray = [];
     printTheFilesAndReturnArray(FolderArray, FinalArray);
     return FinalArray;

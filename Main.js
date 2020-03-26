@@ -7,8 +7,10 @@ let reporitoryFolder;
 let sourceFold;
 
 let loop = true;
+
+
 //while loop that asks for user input of their commands
-rl.question("Welcome to Team Success VCS!! please enter a command (possible commands are:(create-repo, check-in))",function(command) {
+rl.question("Welcome to Team Success VCS!! please enter a command (possible commands are:(create-repo, check-in)): ",function(command) {
 
     //if the command is create repo, create the repository
     if(command == "create-repo"){

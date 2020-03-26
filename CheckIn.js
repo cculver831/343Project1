@@ -4,6 +4,9 @@ const path = require('path');
 //Steven Centeno
 //completed 3/26/2020
 
+//this is used as a global variable to be used by the 
+var ArraySourceLen;
+
 
 //this function gets the source tree files and returns them in an array
 //the upsource tree variable is the full path of the updated source tree
@@ -11,6 +14,7 @@ function getProjectTree(UpSourceTreeDir){
 
     //read files from the source file (is var so that the variable can be used globally aka outside of the method)
     var readFile = require('./ReadFiles')(String(UpSourceTreeDir));
+    ArraySourceLen = readFile.ArrayResult.length;
     return readFile.ArrayResult;
 }
 
@@ -22,36 +26,32 @@ function getProjectTree(UpSourceTreeDir){
 //the files existing in the repository. If the files already exist in there, it gets overwritten (also takes labels into account)
 //additionally, it creates a new manifest file and copies all contents copied and overwritten into the manifest file along with the date/time
 //and command used to run the check in
-function copyFilesToRepository(RepositoryDir, UpSourceTreeDir){
+function copyFilesToRepository(UpSourceTreeDir, RepositoryDir){
     
     //gets the files from the source
     let SourceFiles = getProjectTree(UpSourceTreeDir);
-
-    //gets the files in the repository
-    let RepDirReader = require('./ReadFiles')(String(RepositoryDir));
-    let RepFiles = RepDirReader.ArrayResult;
     
     //creates the new manifest file and saves the manifest file directory
     let location = createManifestFile(RepositoryDir);
 
     //goes through array of file paths and checks if they are similar to any file in the repository
     //if they are, overwrite them and update the manifest file per file added
-    for(let i = 0; i < SourceFiles.len; i++){
+    console.log(ArraySourceLen);
+    for(let i = 0; i < ArraySourceLen; i++){
     
             //gets the artifact ID of each file and compares it to the 
             let artifact = require('./ArtifactRunner')(String(SourceFiles[i]));
-            let fileArtifactId = artifact.getArtifact;
 
 
             //copy file to folder, if it already exists, overwrite it
-            fs.copyFile(String(SourceFiles[i]), path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + fileArtifactId), (err) => {
+            fs.copyFile(String(SourceFiles[i]), path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + artifact.getArtifact), (err) => {
                 //throws error if could not copy file to destination  
                 if (err) throw err;
             });
 
             //MANIFEST
             //write the file into the manifest file
-            let fileInformation = fileArtifactId + "=" + SourceFiles[i] + "\n";
+            let fileInformation = artifact.getArtifact + "=" + SourceFiles[i] + "\n";
 
             //appends info into files (file destination, content, error)
             fs.appendFile(location, fileInformation, function (err) {
@@ -81,8 +81,7 @@ function copyFilesToRepository(RepositoryDir, UpSourceTreeDir){
 function createManifestFile(RepositoryDir){
 
     //reads the latest manifest file in the repository
-    let RepDir =  path.join(RepositoryDir + '\\' +'.Temp');
-    let RepDirFiles = require('./ReadFiles')(String(RepDir));
+    let RepDirFiles = require('./ReadFiles')(String(RepositoryDir));
     let RepLatestMani = RepDirFiles.latestManiFile;
 
     //creates a new manifest file in the repository
