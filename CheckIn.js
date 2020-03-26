@@ -1,34 +1,106 @@
 const fs = require('fs');
 const path = require('path');
+
 //Steven Centeno
-//completed 2/28/2020    
+//completed 3/26/2020
 
-//This file will:
-//change files in the repo (update the repo) by adding new files (or changed files) from the source project tree
 
-//each check in is a different version of the project tree
-//create for each new project tree a manifest file representing every single file existing in the project tree (copied to the repo or not)
-//with the command line and the date and time stamp
+//this function gets the source tree files and returns them in an array
+//the upsource tree variable is the full path of the updated source tree
+function getProjectTree(UpSourceTreeDir){
 
-//will search through the manifest files (versions) in the project tree possibly using labels
-//users folder conatining a version of the project tree (the argument for the check in function) should have also been the argument for the
-//check out function (or command to be exact), (it could have also been the original create repo function call) and it will always remain as 
-//the same folder/argument
+    //read files from the source file (is var so that the variable can be used globally aka outside of the method)
+    var readFile = require('./ReadFiles')(String(UpSourceTreeDir));
+    return readFile.ArrayResult;
+}
 
-//most code already developed
-//new issues are:
 
-//1. If a project file has the same computed “CPL” artifact ID as an artifact in the repo, then we can
-//  presume that the project-tree artifact is the same file in both places. So, you do not need to
-//  copy this project-tree artifact and overwrite the existing identical artifact copy in the repo –
-//  but if that seems easier then you can do such an overwrite spending the extra copy time.
 
-//2. Also, you will create a "check-in" manifest file for this command. It will include the command
-//  and its arguments as well as the usual manifest information (same as for a "create-repo"
-//  command.) Note, if your project #1 manifest didn't include the "create-repo" command and
-//  arguments that was used to create it, please upgrade so that that manifest includes these.
 
-//3. Regardless of whether a project-tree file has been changed (ie, it's a new artifact ID) or not (ie,
-//  it's a duplicate artifact ID of an artifact in the repo), the file-name and its artifact ID must be
-//  recorded in the new manifest file for this check-in (with the check-in command line
-//  arguments and the date-time stamp, of course).
+
+//gets everything from the target Folder (from the getProjectTree function) and searches through the files and compares it with 
+//the files existing in the repository. If the files already exist in there, it gets overwritten (also takes labels into account)
+function copyFilesToRepository(RepositoryDir, UpSourceTreeDir){
+    
+    //gets the files from the source
+    let SourceFiles = getProjectTree(UpSourceTreeDir);
+
+    //gets the files in the repository
+    let RepDirReader = require('./ReadFiles')(String(RepositoryDir));
+    let RepFiles = RepDirReader.ArrayResult;
+    
+    //creates the new manifest file and saves the manifest file directory
+    let location = createManifestFile(RepositoryDir);
+
+    //goes through array of file paths and checks if they are similar to any file in the repository
+    //if they are, overwrite them and update the manifest file per file added
+    for(let i = 0; i < SourceFiles.len; i++){
+    
+            //gets the artifact ID of each file and compares it to the 
+            let artifact = require('./ArtifactRunner')(String(SourceFiles[i]));
+            let fileArtifactId = artifact.getArtifact;
+
+
+            //copy file to folder, if it already exists, overwrite it
+            fs.copyFile(String(SourceFiles[i]), path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + fileArtifactId), (err) => {
+                //throws error if could not copy file to destination  
+                if (err) throw err;
+            });
+
+            //MANIFEST
+            //write the file into the manifest file
+            let fileInformation = fileArtifactId + "=" + SourceFiles[i] + "\n";
+
+            //appends info into files (file destination, content, error)
+            fs.appendFile(location, fileInformation, function (err) {
+                if (err) throw err;
+            });
+    }
+
+    //append Date and time to manifest
+    let d = new Date();
+    fs.appendFile(location, d + "\n", function (err) {
+        if (err) throw err;
+    });
+
+    //append the command line and the arguments into the manifest
+    let command = "Command: check-in, " + UpSourceTreeDir + ", " + RepositoryDir;
+    fs.appendFile(location, command + "\n", function (err) {
+        if (err) throw err;
+    });
+}
+
+
+
+
+
+//creates a mainifest file in the repository
+//returns the location of the manifest file
+function createManifestFile(RepositoryDir){
+
+    //reads the latest manifest file in the repository
+    let RepDir =  path.join(RepositoryDir + '\\' +'.Temp');
+    let RepDirFiles = require('./ReadFiles')(String(RepDir));
+    let RepLatestMani = RepDirFiles.latestManiFile;
+
+    //creates a new manifest file in the repository
+    var location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(Number(RepLatestMani) + 1) + ".rc" )
+    fs.appendFile(location, "Commit " + ((Number(RepLatestMani)) + 1)  + ".source:\n", function (err) {
+
+        //throws error if could not append file  
+        if (err) throw err;
+    });
+
+    return location;
+}
+
+
+
+
+
+//exports the function
+module.exports = function(SourceFolder,Repository) {
+    return {
+        Result : copyFilesToRepository(SourceFolder,Repository)
+    };
+};
