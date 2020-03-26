@@ -18,8 +18,10 @@ function getProjectTree(UpSourceTreeDir){
 
 
 
-//gets everything from the target Folder (from the getProjectTree function) and searches through the files and compares it with 
+//gets everything from the source Folder (from the getProjectTree function) and searches through the files and compares it with 
 //the files existing in the repository. If the files already exist in there, it gets overwritten (also takes labels into account)
+//additionally, it creates a new manifest file and copies all contents copied and overwritten into the manifest file along with the date/time
+//and command used to run the check in
 function copyFilesToRepository(RepositoryDir, UpSourceTreeDir){
     
     //gets the files from the source
