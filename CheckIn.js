@@ -4,8 +4,13 @@ const path = require('path');
 //Steven Centeno
 //completed 3/26/2020
 
-//this is used as a global variable to be used by the 
+//this file is means to act like a "push" to the repository
+
+//this is used as a global variable to be used by the copy to reposiory file
 var ArraySourceLen;
+
+
+
 
 
 //this function gets the source tree files and returns them in an array
