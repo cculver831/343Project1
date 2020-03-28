@@ -1,4 +1,4 @@
-CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\Losers.txt
+NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\Losers.txt
 CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\REEEEE\I.txt
 CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\REEEEE\YOU SUCK.txt
 CLP NAME=C:\Users\josep\Desktop\School\Spring2020\CECS343\Project1Repo\MyApp\OtherFolder\theBigSad.txt
