@@ -1,4 +1,13 @@
 
+
+//Hanson Nguyen
+/**
+ * Checkout Feature:
+ * allows the user to copy files from the version control into and existing folder
+ */
+ //paramater passed through will be source repository, destination, and manifest file name or label
+ //the character '|' means there is a label
+
 function CheckOut(repo, dest, manif)
 {
     const path = require('path')
@@ -20,16 +29,18 @@ function CheckOut(repo, dest, manif)
         //console.log(lines);
 
         
-        
+        //Check if the argument passed into the manifest is a file is a valid manifest file
         if(manif.slice(-2) == 'rc')
         {
             // read contents of the file
             const data = fs.readFileSync(repo + "\\.Temp\\" + manif, 'UTF-8');
             var lines = data.split(/\r?\n/);
 
+            // Loops through the data in the confirmed manifest file and carry logic accordingly
             for(var i = 0; i < lines.length; i++)
             {
                 var line = lines[i];
+                // Check if the first letter of the line is P for the file 
                 if(line[0] == "P")
                 {
                     var comp = line.split("=");
@@ -62,6 +73,7 @@ function CheckOut(repo, dest, manif)
             }   
             console.log("Completed Command");
         }
+        // else if to check if the user passed in a valid foratted label
         else if(manif[0] == '|')
         {
             for(var i = 0; i < files.length; i++)
@@ -126,10 +138,6 @@ function CheckOut(repo, dest, manif)
                 }
             }
             
-            // else
-            // {
-            //     console.log("there was no valid label or valid manifest file")
-            // }
         }
         
 
