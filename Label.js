@@ -6,13 +6,9 @@
  */
  //given a manifest file location and a label string
  //the character '|' means there is another label
-const form = document.querySelector('form')
-const ul = document.querySelector('ul')
-const button = document.querySelector('button')
-const input = document.getElementById('item')
-const targFolder = document.getElementById('tf')
-const Destfolder = document.getElementById('df')
-
+document.getElementById("Label").addEventListener("click", function(){
+  document.getElementById("Test").innerHTML = "Test from Label Script";
+});
  var prependFile = require('prepend-file');
  const fs = require('fs');
 
@@ -34,7 +30,7 @@ try {
     //if labels exist, add new label given
     if(check[0] == '|'){
         //add new label--------------replace label here
-        lines[0] = lines[0] + "|" + "TestNigga2" + "\n";
+        lines[0] = lines[0] + "|" + input.value + "\n";
         
         //replace first line
         fs.writeFile('Manifest.txt', (lines[0]), function (err) {
@@ -64,7 +60,7 @@ try {
     //if there is no labels, then prepend
     else{
         //----------replace label here
-        labels = "|" + "TestNigga" + "\n";
+        labels = "|" + input.value + "\n";
         prependFile('Manifest.txt', labels, function (err) {
             if (err) {
                 // Error

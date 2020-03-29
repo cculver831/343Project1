@@ -4,32 +4,71 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>New Tab App</title>
+    <title>Team Success Version Control</title>
 
     <link rel="stylesheet" href="https://unpkg.com/primitive-ui/dist/css/main.css" />
+
   </head>
 
   <body>
     <div class="small-container">
-      <h1>New Tab App</h1>
+      <h1>Team Succes Version Control</h1>
 
       <form>
-  <input id="item" type="text" placeholder="Enter Label here (optional)" required />
-          <input id="tf" type="text" placeholder="Enter Target Folder Path" required />
-          <input id="df" type="text" placeholder="Enter Destination Folder Path" required />
-          
+  <input id="item" type="text" placeholder="Enter Label here (optional)" required />        
 </form>
+  <input id="tf" type="text" placeholder="Enter Target Folder Path" required />
+<input id="df" type="text" placeholder="Enter Destination Folder Path" required />
+        
 
-<h2>Items</h2>
+<h2>Labeled Commits</h2>
 <ul></ul>
+<button id="Label">Label</button>
+<button id="Create">Create Repo</button>
+<button id="CheckIn">Check-In</button>
+<button id="CheckOut"> Check-Out</button>
 
-<button>Clear All</button>
     </div>
-      <script src =CheckIn.js></script>
-      <script src =Label.js></script>
-      <script src =CopyFiles.js></script>
-      <script src =ArtifactRunner.js></script>
-      <script src =ReadFiles.js></script>
-      <script src="StorageTest.js"></script>
+         <!-- the Script Below shows the label names created on HTML Page -->
+     <script>
+      const form = document.querySelector('form')
+const ul = document.querySelector('ul')
+const button = document.querySelector('button')
+const input = document.getElementById('item')
+const targFolder = document.getElementById('tf')
+const Destfolder = document.getElementById('df')
+let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []
+
+localStorage.setItem('items', JSON.stringify(itemsArray))
+const data = JSON.parse(localStorage.getItem('items'))
+
+const liMaker = text => {
+  const li = document.createElement('li')
+  li.textContent = text
+  ul.appendChild(li)
+}
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault()
+
+  itemsArray.push(input.value)
+  localStorage.setItem('items', JSON.stringify(itemsArray))
+  liMaker(input.value)
+  input.value = ''
+})
+
+data.forEach(item => {
+  liMaker(item)
+})
+      </script>
+      
+      <p id ="Test">Test</p>
+      <script src ="Label.js"></script>
+<script src ="ArtifactRunner.js"></script>
+      <script src ="CheckIn.js"></script>
+      <script src ="ReadFiles.js"></script>
+      <script src ="CopyFiles.js"></script>
+   
+ 
   </body>
 </html>
