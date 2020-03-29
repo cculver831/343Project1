@@ -20,28 +20,37 @@ try {
 
      // split the contents by new line
     var lines = data.split(/\r?\n/);
-    console.log(lines);
+    
+    //print the array to check if everything seems correct
+    //console.log(lines);
+
     //check is the first line of the manifest
     var check = lines[0];
     //if labels exist, add new label given
     if(check[0] == '|'){
-        //add new label
+        //add new label--------------replace label here
         lines[0] = lines[0] + "|" + "TestNigga2" + "\n";
-        //print the new result
-        console.log(lines[0]);
         
         //replace first line
         fs.writeFile('Manifest.txt', (lines[0]), function (err) {
             if (err) throw err;
         });
+        
 
-        var i;
-        console.log("Loop tiem");
         //add the rest of lines
         var manifestData = "";
+        var i;
         for(i = 1; i < lines.length; i++) {
-            lines[i] = lines[i] + "\n";
-            manifestData += lines[i];
+            //dont insert new line when at the last loop
+            if(i == lines.length - 1){
+                lines[i] = lines[i];
+                manifestData += lines[i];  
+            }
+            else{
+                lines[i] = lines[i] + "\n";
+                manifestData += lines[i];
+            }
+            
         };
         fs.appendFile('Manifest.txt', manifestData, function (err) {
             if (err) throw err;
@@ -49,15 +58,13 @@ try {
     }
     //if there is no labels, then prepend
     else{
-
-        labels = "|TestNigga" + "\n";
+        //----------replace label here
+        labels = "|" + "TestNigga" + "\n";
         prependFile('Manifest.txt', labels, function (err) {
             if (err) {
                 // Error
                 console.log("Couldnt add")
             }
-            // Success
-            console.log('The "data to prepend" was prepended to file!');
         });
     }
     } catch (err) {
