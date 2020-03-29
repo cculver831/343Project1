@@ -1,5 +1,10 @@
 //This JS Copies files into a new folder, as well as saving a manifest with the file information
-
+const form = document.querySelector('form')
+const ul = document.querySelector('ul')
+const button = document.querySelector('button')
+const input = document.getElementById('item')
+const targFolder = document.getElementById('tf')
+const Destfolder = document.getElementById('df')
 //gets libraries and variables that are outside of this script local scope
 function copyFiles(sourceFolder,targetFolder)
 {

@@ -6,7 +6,12 @@
  */
  //given a manifest file location and a label string
  //the character '|' means there is another label
-
+const form = document.querySelector('form')
+const ul = document.querySelector('ul')
+const button = document.querySelector('button')
+const input = document.getElementById('item')
+const targFolder = document.getElementById('tf')
+const Destfolder = document.getElementById('df')
 
  var prependFile = require('prepend-file');
  const fs = require('fs');
