@@ -1,3 +1,10 @@
+
+CheckInbtn.addEventListener("click", function(){
+  document.getElementById("Test").innerHTML = "Test for ArtifactRunner Script";
+});
+
+
+
 const fs = require('fs');
 const path = require('path')
 //Hanson Nguyen

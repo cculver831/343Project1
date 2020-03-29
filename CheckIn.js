@@ -1,3 +1,10 @@
+
+CheckInbtn.addEventListener("click", function(){
+  document.getElementById("Test").innerHTML += "Test for Check InScript";
+});
+
+
+
 const fs = require('fs');
 const path = require('path');
 
@@ -98,10 +105,12 @@ function createManifestFile(RepositoryDir){
     });
 
     return location;
+    
+ document.getElementById("Checkoutoutput").innerHTML += "Congratulations! CheckIn Complete";
 }
 
 
-
+copyFilesToRepository(targFolder.value, DestFolder.value);
 
 
 //exports the function
