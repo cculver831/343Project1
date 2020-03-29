@@ -6,7 +6,7 @@
  */
  //given a manifest file location and a label string
  //the character '|' means there is another label
-document.getElementById("Label").addEventListener("click", function(){
+Labelbtn.addEventListener("click", function(){
   document.getElementById("Test").innerHTML += "Test from Label Script";
 });
  var prependFile = require('prepend-file');

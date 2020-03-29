@@ -33,7 +33,10 @@
      <script>
       const form = document.querySelector('form')
 const ul = document.querySelector('ul')
-const button = document.querySelector('button')
+const Labelbtn = document.getElementById('Label')
+const Createbtn = document.getElementById('Create')
+const CheckInbtn = document.getElementById('CheckIn')
+const Checkoutbtn = document.getElementById('CheckOut')
 const input = document.getElementById('item')
 const targFolder = document.getElementById('tf')
 const Destfolder = document.getElementById('df')
@@ -48,7 +51,7 @@ const liMaker = text => {
   ul.appendChild(li)
 }
 
-form.addEventListener('submit', function(e) {
+Labelbtn.addEventListener('click', function(e) {
   e.preventDefault()
 
   itemsArray.push(input.value)
@@ -65,8 +68,9 @@ data.forEach(item => {
       <p id ="Test">Output: </p>
       <script src ="Label.js"></script>
 <script src ="ArtifactRunner.js"></script>
-      <script src ="CheckIn.js"></script>
       <script src ="ReadFiles.js"></script>
+      <script src ="CheckIn.js"></script>
+      <script src ="Checkout.js"></script>
       <script src ="CopyFiles.js"></script>
    
  
