@@ -1,4 +1,7 @@
 
+
+//Checkoutbtn.addEventListener("click", CheckOut(targFolder.value, //Destfolder.value, input.value));
+
 function CheckOut(repo, dest, manif)
 {
     const path = require('path')
@@ -144,4 +147,4 @@ function CheckOut(repo, dest, manif)
 
 }
 
-CheckOut("D:\\343 Project\\Target", "D:\\343 Project\\Tree","|Test")
+CheckOut('C:\\Users\\Chloe Culver\\Desktop\\343Project1\\Target','C:\\Users\\Chloe Culver\\Desktop\\343Project1\\Tree', "|Test");

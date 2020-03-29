@@ -69,6 +69,7 @@ data.forEach(item => {
 
 function CheckOut(repo, dest, manif)
 {
+    
     const path = require('path')
     const fs = require('fs')
     let files = fs.readdirSync(String(repo + "\\.Temp")); 
