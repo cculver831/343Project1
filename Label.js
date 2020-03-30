@@ -86,4 +86,9 @@ function addLabel(Mloc, newLabel){
     }
 }
  
+module.exports = function(MLoc, newLabel) {
+    return {
+        AddLabel : addLabel(MLoc, newLabel)
+    };
+};
 
