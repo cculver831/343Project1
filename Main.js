@@ -54,7 +54,7 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                         {
                             rl.question("Enter the name of the label: ", function(label)
                             {
-                                let label = require("./Label")(checkIn.Location, label);
+                                let Label = require("./Label")(checkIn.Location, label);
                                 console.log("Added label " + label + " to " + checkIn.Location);
                             });
                         }
