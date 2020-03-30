@@ -6,12 +6,14 @@
  */
  //given a manifest file location and a label string
  //the character '|' means there is another label
-Labelbtn.addEventListener("click", Test);
-Labelbtn.addEventListener("click", addLabel(targFolder.value, input.value));
-function Test()
-{
-    document.getElementById("Test").innerHTML += "Test from Label Script";
-}
+
+        //Code for HTML
+// Labelbtn.addEventListener("click", Test);
+// Labelbtn.addEventListener("click", addLabel(targFolder.value, input.value));
+// function Test()
+// {
+//     document.getElementById("Test").innerHTML += "Test from Label Script";
+// }
 /**
  * addLabel adds a label to a given manifest file
  * string MLoc is the Manifest Location
