@@ -120,8 +120,6 @@ function manifestFile(RepositoryDir)
 }
 
 
-copyFilesToRepository(targFolder.value, DestFolder.value);
-
 
 //exports the function
 module.exports = function(SourceFolder,Repository) {
