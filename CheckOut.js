@@ -166,6 +166,8 @@ function CheckOut(repo, dest, manif)
 
 function getManifest(repo, manif)
 {
+    const fs = require('fs')
+    let files = fs.readdirSync(String(repo + "\\.Temp")); 
     try{
         if(manif.slice(-2) == 'rc')
         {
@@ -188,9 +190,9 @@ function getManifest(repo, manif)
                         // split out the first lines to check if there's any labels
                         var labels = check.split("|");
                         // for loops to check if the labels the user inputted in the manifest file
-                        for(var i = 0; i < labels.length; i++)
+                        for(var x = 0; x < labels.length; x++)
                         {
-                            if(labels[i] != "" &&  "|"+ labels[i] == manif)
+                            if(labels[x] != "" &&  "|"+ labels[x] == manif)
                             {
                                 return repo + "\\.Temp\\" + files[i];
                             }

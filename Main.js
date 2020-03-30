@@ -46,26 +46,27 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                 reporitoryFolder = targetFolder;
                 sourceFold = sourceFolder;
                 answer = "";
-                do
-                {
-                    rl.question("Would you like to add a label to the manifest file?(Y/N)", function(answer)
-                    {
-                        if(answer=="Y" || answer == "y")
-                        {
-                            rl.question("Enter the name of the label: ", function(label)
-                            {
-                                let label = require("./Label")(checkIn.Location, label);
-                                console.log("Added label " + label + " to " + checkIn.Location);
-                            });
-                        }
-                    });
-                    
-                }while(answer != "N" || answer != "n");
 
-                let Listings = require("./Listings")(checkIn.Location);
-                Listings.DataListing;
+
+                rl.question("Would you like to add a label to the manifest file?(Y/N)", function(answer)
+                {
+                    if(answer=="Y" || answer == "y")
+                    {
+                        rl.question("Enter the name of the label: ", function(label)
+                        {
+                            let Label = require("./Label")(checkIn.Location, label);
+                            console.log("Added label " + label + " to " + checkIn.Location + "\n");
+                            let Listings = require("./Listings")(checkIn.Location);
+                            Listings.DataListing;
+                        });
+                    }
+                });
+
+
+                
             });
         });
+        
     }
 
     else if(command == "check-out"){
