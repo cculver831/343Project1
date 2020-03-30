@@ -1,7 +1,7 @@
 
-CheckInbtn.addEventListener("click", function(){
-  document.getElementById("Test").innerHTML += "Test for Check InScript";
-});
+// CheckInbtn.addEventListener("click", function(){
+//   document.getElementById("Test").innerHTML += "Test for Check InScript";
+// });
 
 
 
@@ -106,7 +106,7 @@ function createManifestFile(RepositoryDir){
 
     return location;
     
- document.getElementById("Checkoutoutput").innerHTML += "Congratulations! CheckIn Complete";
+ document.getElementById("Checkinoutput").innerHTML += "Congratulations! CheckIn Complete";
 }
 
 

@@ -18,6 +18,7 @@ function Test()
  * string newLabel the label to be assigned to the manifest
  */
 function addLabel(Mloc, newLabel){
+    
     var prependFile = require('prepend-file');
     const fs = require('fs');
 

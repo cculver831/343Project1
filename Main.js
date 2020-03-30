@@ -10,7 +10,7 @@ let loop = true;
 
 
 //while loop that asks for user input of their commands
-rl.question("Welcome to Team Success VCS!! please enter a command (possible commands are:(create-repo, check-in)): ",function(command) {
+rl.question("Welcome to Team Success VCS!! please enter a command (possible commands are:(create-repo, check-in, check-out)): ",function(command) {
 
     //if the command is create repo, create the repository
     if(command == "create-repo"){
@@ -40,6 +40,23 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                 
                 let checkIn = require('./CheckIn')(sourceFolder,targetFolder);
                 checkIn.Result;
+                console.log('the repository has been updated!');
+
+                reporitoryFolder = targetFolder;
+                sourceFold = sourceFolder;
+            });
+        });
+    }
+
+    else if(command == "check-out"){
+
+        //Asks user for input i.e. File loaction and File destination
+        rl.question("Please enter the path of the Source Folder: ", function(sourceFolder) {
+            rl.question("Please enter the Repository(target) Folder Destination: ", function(targetFolder) {
+                console.log(`the repository folder ${targetFolder} has been updated`);
+                
+                let checkOut = require('./CheckOut')(sourceFolder,targetFolder);
+                checkOut.Result;
                 console.log('the repository has been updated!');
 
                 reporitoryFolder = targetFolder;

@@ -6,7 +6,7 @@
 
     <title>Team Success Version Control</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/primitive-ui/dist/css/main.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primitive-ui/dist/css/main.css"/>
 
   </head>
 
@@ -18,7 +18,7 @@
   <input id="item" type="text" placeholder="Enter Label here (optional)" required />        
 </form>
   <input id="tf" type="text" placeholder="Enter Target Folder Path" required />
-<input id="df" type="text" placeholder="Enter Destination Folder Path" required />
+<input id="df" type="text" placeholder="Enter Destination Folder Path" required/>
         
 
 <h2>Labeled Commits</h2>
@@ -49,9 +49,7 @@ let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem
 localStorage.setItem('items', JSON.stringify(itemsArray))
 const data = JSON.parse(localStorage.getItem('items'))
 //Code for Listings
-let ListArray = localStorage.getItem('List') ? JSON.parse(localStorage.getItem('List')) : []
-localStorage.setItem('List', JSON.stringify(ListArray))
-const data = JSON.parse(localStorage.getItem('List'))
+
 
 
 //Function that displays list contents

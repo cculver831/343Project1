@@ -27,10 +27,10 @@ function Listfunc(s)
 //  Listings.appendChild(li)
 //}
 //    //Loop for Manifest to be printed out
-    for( int i = 0; lines.length ; i++)
+    for( int i = 0; lines.length; i++)
         {
             console.log(lines[i])
         }
 //   
 //    
-//}
+}
