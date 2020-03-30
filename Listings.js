@@ -14,6 +14,8 @@ function Listfunc(manifest)
     var lines = data.split(/\r?\n/);
     //Variables to access and mainttain listings    
 
+    console.log("Displaying manifest file!")
+    
     //Loop for Manifest to be printed out
     for(var i = 0; i < lines.length; i++)
         {
