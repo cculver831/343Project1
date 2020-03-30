@@ -7,9 +7,12 @@
  */
  //paramater passed through will be source repository, destination, and manifest file name or label
  //the character '|' means there is a label
-
-function CheckOut(repo, dest, manif)
+Checkoutbtn.addEventListener("click", CheckOut);
+function CheckOut()
 {
+    var repo = targFolder.value
+    var dest = Destfolder.value
+    var manif = input.value
     const path = require('path')
     const fs = require('fs')
     let files = fs.readdirSync(String(repo + "\\.Temp")); 
@@ -152,4 +155,3 @@ function CheckOut(repo, dest, manif)
 
 }
 
-CheckOut("D:\\343 Project\\Target", "D:\\343 Project\\Tree","|Test")

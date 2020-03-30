@@ -22,29 +22,39 @@
         
 
 <h2>Labeled Commits</h2>
-<ul></ul>
+<ul id = "Labels"></ul>
 <button id="Label">Label</button>
 <button id="Create">Create Repo</button>
 <button id="CheckIn">Check-In</button>
 <button id="CheckOut"> Check-Out</button>
-
+<button id="Clear"> ClearList</button>
+<button id="List"> List</button>
+<ul id = "Lisintgs"></ul>
     </div>
          <!-- the Script Below shows the label names created on HTML Page -->
      <script>
-      const form = document.querySelector('form')
+const form = document.querySelector('form')
+const Listings = document.getElementById('Listings')
 const ul = document.querySelector('ul')
 const Labelbtn = document.getElementById('Label')
 const Createbtn = document.getElementById('Create')
 const CheckInbtn = document.getElementById('CheckIn')
 const Checkoutbtn = document.getElementById('CheckOut')
+const Clearbtn = document.getElementById('Clear')
 const input = document.getElementById('item')
 const targFolder = document.getElementById('tf')
 const Destfolder = document.getElementById('df')
+//Code for Labels
 let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []
-
 localStorage.setItem('items', JSON.stringify(itemsArray))
 const data = JSON.parse(localStorage.getItem('items'))
+//Code for Listings
+let ListArray = localStorage.getItem('List') ? JSON.parse(localStorage.getItem('List')) : []
+localStorage.setItem('List', JSON.stringify(ListArray))
+const data = JSON.parse(localStorage.getItem('List'))
 
+
+//Function that displays list contents
 const liMaker = text => {
   const li = document.createElement('li')
   li.textContent = text
@@ -63,174 +73,25 @@ Labelbtn.addEventListener('click', function(e) {
 data.forEach(item => {
   liMaker(item)
 })
-      </script>
-      <!-- CheckOut Script Test -->
-      <script>
-
-function CheckOut(repo, dest, manif)
-{
-    const path = require('path')
-    const fs = require('fs')
-    let files = fs.readdirSync(String(repo + "\\.Temp")); 
-    
-
-    try{
-        
-        
-        
-        
-
-        //Create Folder with dir directory if the manifest/label exist and folder doesn't exist
-        if (!fs.existsSync(dest)){
-            fs.mkdirSync(dest);
-        }
-        //print the array to check if everything seems correct
-        //console.log(lines);
-
-        
-        
-        if(manif.slice(-2) == 'rc')
+         
+Clearbtn.addEventListener('click', function()
+  {
+    localStorage.clear()
+    while(ul.firstChild)
         {
-            // read contents of the file
-            const data = fs.readFileSync(repo + "\\.Temp\\" + manif, 'UTF-8');
-            var lines = data.split(/\r?\n/);
-
-            for(var i = 0; i < lines.length; i++)
-            {
-                var line = lines[i];
-                if(line[0] == "P")
-                {
-                    var comp = line.split("=");
-                    console.log(comp);
-                    var folders = comp[1].split("\\");
-                    folders.splice(0,1);
-                    var name = folders.pop();
-                    for(var index = 0; index < folders.length; index++)
-                    {
-                        if(index != 0)
-                        {
-                            folders[index] = folders[index-1] + "\\" +  folders[index];
-                        }
-                    }
-                    
-                    console.log(folders);
-                    for(var a = 0; a < folders.length; a++)
-                    {
-                        if (!fs.existsSync(dest + "\\" + folders[a])){
-                            fs.mkdirSync(dest + "\\" + folders[a]);
-                        }
-                    }
-                    
-                    fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
-                        //throws error if could not copy file to destination  
-                      if (err) throw err;
-                    });
-
-                }
-            }   
-            console.log("Completed Command");
+            ul.removeChild(ul.firstChild)
         }
-        else if(manif[0] == '|')
-        {
-            for(var i = 0; i < files.length; i++)
-            {
-                if(files[i].slice(-2) == "rc")
-                {
-                    // read contents of the file
-                    const data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
-                    var lines = data.split(/\r?\n/);
-                    //check is the first line of the manifest
-                    var check = lines[0];
-                    if(check[0] == '|')
-                    {
-                        var labels = check.split("|");
-
-                        for(var i = 0; i < labels.length; i++)
-                        {
-                            if(labels[i] != "" &&  "|"+ labels[i] == manif)
-                            {
-                                for(var i = 0; i < lines.length; i++)
-                                {
-                                    var line = lines[i];
-                                    if(line[0] == "P")
-                                    {
-                                        var comp = line.split("=");
-                                        console.log(comp);
-                                        var folders = comp[1].split("\\");
-                                        folders.splice(0,1);
-                                        var name = folders.pop();
-                                        for(var index = 0; index < folders.length; index++)
-                                        {
-                                            if(index != 0)
-                                            {
-                                                folders[index] = folders[index-1] + "\\" +  folders[index];
-                                            }
-                                        }
-                                        
-                                        console.log(folders);
-                                        for(var a = 0; a < folders.length; a++)
-                                        {
-                                            if (!fs.existsSync(dest + "\\" + folders[a])){
-                                                fs.mkdirSync(dest + "\\" + folders[a]);
-                                            }
-                                        }
-                                        
-                                        fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
-                                            //throws error if could not copy file to destination  
-                                        if (err) throw err;
-                                        });
-
-                                    }
-                                }   
-                                console.log("Completed Command");
-                            }
-                            
-                        }
-                    }
-                    else
-                    {
-                        console.log("there was no valid label or valid manifest file")
-                    }
-                }
-            }
-            
-            // else
-            // {
-            //     console.log("there was no valid label or valid manifest file")
-            // }
-        }
-        
-
-        
-
-
-    } catch (err) {
-        console.error(err);
-    }
-   
-
-
-}
-          Checkoutbtn.addEventListener('click', 
-    function() {
-        CheckOut(targFolder.value, Destfolder.value, input.value);
-    });
-                                       
-    Checkoutbtn.addEventListener('click', function()
-          {
-document.getElementById("Checkinoutput").innerHTML += "This Code is running";
-          }
-);
-   
-                    
-
+});
       </script>
+
       <p id ="Test">Output: </p>
       <p id ="Checkinoutput">CheckIn Output: </p>
+      <script src = "Listings.js"></script>
       <script src ="Label.js"></script>
 <script src ="ArtifactRunner.js"></script>
       <script src ="ReadFiles.js"></script>
       <script src ="CheckIn.js"></script>
+      <script src = "CheckOut.js"></script>
       <script src ="CopyFiles.js"></script>
    
  
