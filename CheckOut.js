@@ -168,5 +168,5 @@ module.exports = function(repo, dest, manif) {
         Result : CheckOut(repo, dest, manif)
     };
 };
-
-CheckOut("D:\\343 Project\\Target", "D:\\343 Project\\Tree","|Test")
+//Test function, no longer needed
+//CheckOut("D:\\343 Project\\Target", "D:\\343 Project\\Tree","|Test")
