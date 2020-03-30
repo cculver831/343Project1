@@ -109,6 +109,16 @@ function createManifestFile(RepositoryDir){
  document.getElementById("Checkinoutput").innerHTML += "Congratulations! CheckIn Complete";
 }
 
+function manifestFile(RepositoryDir)
+{
+    let RepDirFiles = require('./ReadFiles')(String(RepositoryDir));
+    let RepLatestMani = RepDirFiles.latestManiFile;
+
+    //creates a new manifest file in the repository
+    var location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(RepLatestMani) + ".rc" )
+    return location;
+}
+
 
 copyFilesToRepository(targFolder.value, DestFolder.value);
 
@@ -116,6 +126,7 @@ copyFilesToRepository(targFolder.value, DestFolder.value);
 //exports the function
 module.exports = function(SourceFolder,Repository) {
     return {
-        Result : copyFilesToRepository(SourceFolder,Repository)
+        Result : copyFilesToRepository(SourceFolder,Repository),
+        Location : manifestFile(Repository)
     };
 };

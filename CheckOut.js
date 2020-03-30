@@ -163,9 +163,56 @@ function CheckOut(repo, dest, manif)
 
 }
 
+
+function getManifest(repo, manif)
+{
+    try{
+        if(manif.slice(-2) == 'rc')
+        {
+            // return manifest
+            return repo + "\\.Temp\\" + manif;
+        }
+        else if(manif[0] == '|')
+        {
+            for(var i = 0; i < files.length; i++)
+            {
+                if(files[i].slice(-2) == "rc")
+                {
+                    // read contents of the file
+                    const data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
+                    var lines = data.split(/\r?\n/);
+                    //check is the first line of the manifest
+                    var check = lines[0];
+                    if(check[0] == '|')
+                    {
+                        // split out the first lines to check if there's any labels
+                        var labels = check.split("|");
+                        // for loops to check if the labels the user inputted in the manifest file
+                        for(var i = 0; i < labels.length; i++)
+                        {
+                            if(labels[i] != "" &&  "|"+ labels[i] == manif)
+                            {
+                                return repo + "\\.Temp\\" + files[i];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            console.log("invalid manifest file or label");
+            throw console.error();
+        }
+    }
+    catch (err) {
+        console.error(err);
+    }
+}
+
 module.exports = function(repo, dest, manif) {
     return {
-        Result : CheckOut(repo, dest, manif)
+        Result : CheckOut(repo, dest, manif),
+        Location : getManifest(repo,manif)
     };
 };
 
