@@ -1,7 +1,7 @@
-
-CheckInbtn.addEventListener("click", function(){
-  document.getElementById("Test").innerHTML = "Test for ArtifactRunner Script";
-});
+//HTML
+//CheckInbtn.addEventListener("click", function(){
+//  document.getElementById("Test").innerHTML = "Test for ArtifactRunner Script";
+//});
 
 
 
