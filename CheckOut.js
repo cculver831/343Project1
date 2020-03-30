@@ -7,12 +7,9 @@
  */
  //paramater passed through will be source repository, destination, and manifest file name or label
  //the character '|' means there is a label
-Checkoutbtn.addEventListener("click", CheckOut);
-function CheckOut()
+
+function CheckOut(repo, dest, manif)
 {
-    var repo = targFolder.value
-    var dest = Destfolder.value
-    var manif = input.value
     const path = require('path')
     const fs = require('fs')
     let files = fs.readdirSync(String(repo + "\\.Temp")); 
@@ -51,15 +48,18 @@ function CheckOut()
                     var folders = comp[1].split("\\");
                     folders.splice(0,1);
                     var name = folders.pop();
+                    // Loop through each components folder of the path and ger rid of
                     for(var index = 0; index < folders.length; index++)
                     {
+                        // Add the directory folders with the last folders, ending result will be the full path of the folder
                         if(index != 0)
                         {
                             folders[index] = folders[index-1] + "\\" +  folders[index];
                         }
                     }
-                    
+
                     console.log(folders);
+                    // Make the folder indiviually with the given path from the beginning to end
                     for(var a = 0; a < folders.length; a++)
                     {
                         if (!fs.existsSync(dest + "\\" + folders[a])){
@@ -67,6 +67,7 @@ function CheckOut()
                         }
                     }
                     
+                    //copy files to those newly created folders
                     fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
                         //throws error if could not copy file to destination  
                       if (err) throw err;
@@ -90,15 +91,19 @@ function CheckOut()
                     var check = lines[0];
                     if(check[0] == '|')
                     {
+                        // split out the first lines to check if there's any labels
                         var labels = check.split("|");
-
+                        // for loops to check if the labels the user inputted in the manifest file
                         for(var i = 0; i < labels.length; i++)
                         {
                             if(labels[i] != "" &&  "|"+ labels[i] == manif)
                             {
+
+                                // go through each lines to check for artifact name and file data
                                 for(var i = 0; i < lines.length; i++)
                                 {
                                     var line = lines[i];
+                                    // Check if the first letter of the line is P for the file 
                                     if(line[0] == "P")
                                     {
                                         var comp = line.split("=");
@@ -106,8 +111,10 @@ function CheckOut()
                                         var folders = comp[1].split("\\");
                                         folders.splice(0,1);
                                         var name = folders.pop();
+                                        // Loop through each components folder of the path and ger rid of
                                         for(var index = 0; index < folders.length; index++)
                                         {
+                                            // Add the directory folders with the last folders, ending result will be the full path of the folder
                                             if(index != 0)
                                             {
                                                 folders[index] = folders[index-1] + "\\" +  folders[index];
@@ -115,13 +122,14 @@ function CheckOut()
                                         }
                                         
                                         console.log(folders);
+                                        // Make the folder indiviually with the given path from the beginning to end
                                         for(var a = 0; a < folders.length; a++)
                                         {
                                             if (!fs.existsSync(dest + "\\" + folders[a])){
                                                 fs.mkdirSync(dest + "\\" + folders[a]);
                                             }
                                         }
-                                        
+                                        //copy files to those newly created folders
                                         fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
                                             //throws error if could not copy file to destination  
                                         if (err) throw err;
@@ -155,3 +163,10 @@ function CheckOut()
 
 }
 
+module.exports = function(repo, dest, manif) {
+    return {
+        Result : CheckOut(repo, dest, manif)
+    };
+};
+
+CheckOut("D:\\343 Project\\Target", "D:\\343 Project\\Tree","|Test")
