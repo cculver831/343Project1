@@ -1,13 +1,13 @@
 //gets File Path
 function getFilePath(fileName) {
   //put chloes repository file path
-  var filepath = "" + fileName
+  let filepath = "" + fileName
   return filePath
 }
 
 function getFileSize(fileInput){
     // files is a FileList object
-    var files = fileInput.files;
+    let files = fileInput.files;
     return files.size;   
 }
 
