@@ -145,10 +145,3 @@ function CreateArtifact(filePath){
     //return the result as "P####-L##-C####.txt"
     return result;
 }
-
-// export the function through node.jd to take in an argument for file path and return a string accordingly
-module.exports = function(FilePath) {
-  return {
-    getArtifact : CreateArtifact(FilePath)
-  };
-};
