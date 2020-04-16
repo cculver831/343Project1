@@ -21,24 +21,24 @@
  */
 function addLabel(Mloc, newLabel){
     
-    var prependFile = require('prepend-file');
+    let prependFile = require('prepend-file');
     const fs = require('fs');
 
 
-    var labels;
+    let labels;
     //get data from text file
     try {
         // read contents of the file
         const data = fs.readFileSync(Mloc, 'UTF-8');
 
         // split the contents by new line
-        var lines = data.split(/\r?\n/);
+        let lines = data.split(/\r?\n/);
         
         //print the array to check if everything seems correct
         //console.log(lines);
 
         //check is the first line of the manifest
-        var check = lines[0];
+        let check = lines[0];
         //if labels exist, add new label given
         if(check[0] == '|'){
 
@@ -52,8 +52,8 @@ function addLabel(Mloc, newLabel){
             
 
             //add the rest of lines
-            var manifestData = "";
-            var i;
+            let manifestData = "";
+            let i;
             for(i = 1; i < lines.length; i++) {
                 //dont insert new line when at the last loop
                 if(i == lines.length - 1){
