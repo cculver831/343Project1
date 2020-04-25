@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-let ArraySourceLen;
+let ArraySourceLen; // will be the length of the manifest array
 
 
 
@@ -16,35 +16,39 @@ let ArraySourceLen;
 //branchedRepoLoc is your version of the project that you may have branced out of
 function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     
-    //gets the files from the source
-    let SourceFiles = getProjectTree(R_ManifestLoc);
+    //gets the files from the manifest file and saves into an array
+    let SourceFiles = createManifestFile(R_ManifestLoc);
 
     //creates the new manifest file and saves the manifest file directory
     //let location = createManifestFile(T_BrancedRepoLoc); ------------------------------
 
     //goes through array of file paths and checks if they are similar to any file in the repository
     //if they are, overwrite them and update the manifest file per file added
-    console.log(ArraySourceLen);
     for(let i = 0; i < ArraySourceLen; i++){
-    
-            //gets the artifact ID of each file and compares it to the 
-            let artifact = require('./ArtifactRunner')(String(SourceFiles[i]));
 
+        //first checks if file exists
+        
+        //then if it doesnt exist, copy it over
 
-            //copy file to folder, if it already exists, overwrite it
-            fs.copyFile(String(SourceFiles[i]), path.join(String(T_BrancedRepoLoc) + "\\"  + ".Temp" + "\\" + artifact.getArtifact), (err) => {
-                //throws error if could not copy file to destination  
-                if (err) throw err;
-            });
+        //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
+        //do merge collisions
 
-            //MANIFEST
-            //write the file into the manifest file
-            //let fileInformation = artifact.getArtifact + "=" + SourceFiles[i] + "\n"; ----------------------------------
+        //=========================================================================================
 
-            //appends info into files (file destination, content, error) ----------------------
-            //fs.appendFile(location, fileInformation, function (err) { -----------------------------------------------
-            //    if (err) throw err; ----------------------------------------------------------
-            //});
+        //copy file to folder, if it already exists, overwrite it
+        fs.copyFile(String(SourceFiles[i]), path.join(String(T_BrancedRepoLoc) + "\\"  + ".Temp" + "\\" + artifact.getArtifact), (err) => {
+            //throws error if could not copy file to destination  
+            if (err) throw err;
+        });
+
+        //MANIFEST
+        //write the file into the manifest file
+        //let fileInformation = artifact.getArtifact + "=" + SourceFiles[i] + "\n"; ----------------------------------
+
+        //appends info into files (file destination, content, error) ----------------------
+        //fs.appendFile(location, fileInformation, function (err) { -----------------------------------------------
+        //    if (err) throw err; ----------------------------------------------------------
+        //});
     }
 
     //append Date and time to manifest
@@ -58,7 +62,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     fs.appendFile(location, command + "\n", function (err) {
         if (err) throw err;
     });
-}
+};
 
 
 
@@ -82,18 +86,18 @@ function createManifestFile(T_BrancedRepoLoc){
 
     return location;
     
-}
+};
 
 
 
 
 
-//this function gets the repository files and returns them in an array
-//the upsource tree variable is the full path of the updated repository that branched earlier
-function getProjectTree(R_ManifestLoc){
+//this function takes in the manifest location and returns all files that are associated with that maifest file
+function getfilesManifest(R_ManifestLoc){
+    //[[file path,artifact id],[],[],[],[],[],[],[]]
 
-    //read files from the source file (is var so that the variable can be used globally aka outside of the method)
-    let readFile = require('./ReadFiles')(String(R_ManifestLoc));
-    ArraySourceLen = readFile.ArrayResult.length;
-    return readFile.ArrayResult;
-}
+
+    //gets the artifact ID of each file and compares it
+    let artifact = require('./ArtifactRunner')(String(SourceFiles[i]));
+
+};
