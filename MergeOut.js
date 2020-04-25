@@ -10,14 +10,15 @@ let ArraySourceLen; // will be the length of the manifest array
 //from the repository, and if there are file collisions (possible because
 // its been a long time since the last pull), it will make the user handle these collisions
 
-//all of these are directories:-------
+
 //repoLoc is the repository
 //manifestLoc is a manifest file that is being PULLED from
 //branchedRepoLoc is your version of the project that you may have branced out of
+//note that all these are directories not the actal file name
 function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     
     //gets the files from the manifest file and saves into an array
-    let SourceFiles = createManifestFile(R_ManifestLoc);
+    let SourceFiles = getfilesManifest(repoLoc, R_ManifestLoc);
 
     //creates the new manifest file and saves the manifest file directory
     //let location = createManifestFile(T_BrancedRepoLoc); ------------------------------
@@ -92,12 +93,18 @@ function createManifestFile(T_BrancedRepoLoc){
 
 
 
-//this function takes in the manifest location and returns all files that are associated with that maifest file
-function getfilesManifest(R_ManifestLoc){
-    //[[file path,artifact id],[],[],[],[],[],[],[]]
+//this function takes in the manifest location and repository directory
+//and returns all files that are associated with that maifest file
+//as well as their corresponding check sums
+//returns these values in a 2d array in the formatt
+//[[file path,artifact id],[],[],[],[],[],[],[]]
+function getfilesManifest(repoDir, manifestDir){
+    let manifestFilesR = [];
 
+    //goes through all files in the manifest and both gets their path and their check sums
+    
 
-    //gets the artifact ID of each file and compares it
+    //gets the artifact ID of each file
     let artifact = require('./ArtifactRunner')(String(SourceFiles[i]));
 
 };
