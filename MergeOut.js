@@ -102,9 +102,27 @@ function getfilesManifest(repoDir, manifestDir){
     let manifestFilesR = [];
 
     //goes through all files in the manifest and both gets their path and their check sums
-    
+    const data = fs.readFileSync(repoDir + "\\.Temp\\" + manifestDir, 'UTF-8'); //gets all lines in the manifest
+    let lines = data.split(/\r?\n/);  //separates all lines into an array in the manifest
 
-    //gets the artifact ID of each file
-    let artifact = require('./ArtifactRunner')(String(SourceFiles[i]));
+    //goes through each line in the manifest
+    //if the file starts with a P that infers that the line is a check sum
+    //meaning its a valid file and not a date or command
+    for(let i = 0; i < lines.length; i++){
+        let line = lines[i]; //gets a single line from the array of lines
+        FileSum = []; //this will be an array holding both the checksum(artifact id) and the file directory
 
+        //checks if its a checksum 
+        if(line[0] == "P"){
+            let checkSum_FilePath = line.split("="); //makes an array separating the check sum and the path
+            FileSum.push(checkSum_FilePath[1])//add the path first
+            FileSum.push(checkSum_FilePath[0])//add the check sum (artifact ID) second
+        }
+
+        //now add the path and check sum to the entire Folder
+        manifestDir.push(FileSum)
+    }  
+
+    //returns all file paths along with their check sums
+    return manifestFilesR;
 };
