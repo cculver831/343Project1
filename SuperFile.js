@@ -4,9 +4,12 @@
 
 
 
-Createbtn.addEventListener("click", function(){
-  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
-});
+//Createbtn.addEventListener("click", function(){
+//  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
+//});
+copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target');
+
+
 const fs = require('fs');
 const path = require('path');
 
@@ -21,6 +24,8 @@ const path = require('path');
 //wantPath =  boolean to return the full path of the files too, true to return whole path, false to only return file
 //targetFold = the folder that you would want to target in the directory you give [(" ") if you want everything in that directory]
 function getFiles (dir, targetFold, wantPath){
+    const fs = require('fs');
+    const path = require('path');
     let myArray = [];
     
     //gets the current directory (CD/STEVESCOMPUTER//Desktop) (dir should be "__filename" to work 
@@ -90,6 +95,8 @@ function getFiles (dir, targetFold, wantPath){
 //both prints the files and returns all the files into an array with everything besides the direcroties (includes files in other folders)
 //returns the final array containing all the files (no nested arrays will exist in the final array made the mistake of doing so earlier but corrected it)
 function printTheFilesAndReturnArray(arryFromGetFiles, finalArrayToInsertTo){
+    const fs = require('fs');
+    const path = require('path');
 
     for(let i in arryFromGetFiles){
 
@@ -114,6 +121,8 @@ function printTheFilesAndReturnArray(arryFromGetFiles, finalArrayToInsertTo){
 //this code will read all files in the MyApp folder (excluding dot files (files starting with a dot '.')) and return them in an array 
 //(nested array if folders in that folder exist)
 function returnAllFilesInDirectory(userGivenPath){
+    const fs = require('fs');
+    const path = require('path');
     let FolderArray = getFiles(userGivenPath, " ", true);
     let FinalArray = [];
     printTheFilesAndReturnArray(FolderArray, FinalArray);
@@ -122,6 +131,8 @@ function returnAllFilesInDirectory(userGivenPath){
 
 //Reads the current highest number Manifest Files in The Repository
 function getLatestManifestNum(userGivenPath){
+    const fs = require('fs');
+    const path = require('path');
     
     //goes to the temp directory directly (change the temp into any directory name if you change the name)
     let manifestDir = path.join(userGivenPath + '\\' + '.Temp');
@@ -174,12 +185,14 @@ function getLatestManifestNum(userGivenPath){
 //==================================================================================================================================
 function copyFiles(sourceFolder,targetFolder)
 {
+  const fs = require('fs');
+  const path = require('path');
   let dir =  path.join(targetFolder + '\\' +'.Temp');
 
   if (!fs.existsSync(dir)){
       fs.mkdirSync(dir);
   }
-  console.log("The folder from source:  " + sourceFolder + " hase been copied to destination: " + targetFolder);
+  console.log("The folder from source:  " + String(sourceFolder) + " hase been copied to destination: " + String(targetFolder));
   console.log(returnAllFilesInDirectory(sourceFolder));
   let len = returnAllFilesInDirectory(sourceFolder).length;
   
@@ -197,13 +210,18 @@ function copyFiles(sourceFolder,targetFolder)
   
     //gets copy of script to use function to get CPL
     //copy file to folder
-    fs.copyFile(String(returnAllFilesInDirectory(sourceFolder)[i]), path.join(String(targetFolder) + "\\"  + ".Temp" + "\\" + CreateArtifact(String(returnAllFilesInDirectory(sourceFolder)[i])), (err) => {
+    fs.copyFile(String(returnAllFilesInDirectory(sourceFolder)[i]), path.join(String(targetFolder) + "\\"  + ".Temp" + "\\" + CreateArtifact(String(returnAllFilesInDirectory(sourceFolder)[i]))), (err) => {
       //throws error if could not copy file to destination  
     if (err) throw err;
-    }));
+    });
+    
     //MANIFEST
     //create file info that will be stored in manifest
-    let fileInformation = CreateArtifact(String(returnAllFilesInDirectory(sourceFolder)[i]) + "=" + returnAllFilesInDirectory(sourceFolder)[i] + "\n");
+    let fileInformation = CreateArtifact(String(returnAllFilesInDirectory(sourceFolder)[i])) + "=" + String(returnAllFilesInDirectory(sourceFolder)[i]) + "\n";
+    console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+    console.log(location)
+    console.log(fileInformation)
+    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
     //appends info into files (file destination, content, error)
     fs.appendFile(location, fileInformation, function (err) {
     if (err) throw err;
@@ -235,6 +253,8 @@ function copyFiles(sourceFolder,targetFolder)
 //==================================================================================================================================
 //gets content of a file due to its path
 function getContent(filePath){
+  const fs = require('fs');
+  const path = require('path');
   try {
     //read data from file
     const data = fs.readFileSync(filePath, 'utf8')
@@ -253,6 +273,8 @@ function getContent(filePath){
 
 //function to get the content of a file from filepath
 function getContent(filePath){
+    const fs = require('fs');
+    const path = require('path');
     // try and catch exception if the file path return an error
     try {
       // read the data from the file path argument and return it as the data
@@ -270,6 +292,8 @@ function getContent(filePath){
 // this CreateArtifact function take in an argument of string for file path. It will handle all the calculation for the PLC
 // identification for ArtifactID. After calculation, it will return a string with P----,L--,C----
 function CreateArtifact(filePath){
+    const fs = require('fs');
+    const path = require('path');
     let result = 0;
     let temp = 0;
     
