@@ -18,6 +18,7 @@ let ArraySourceLen; // will be the length of the manifest array
 function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     
     //gets the files from the manifest file and saves into an array
+    //[[file path,artifact id],[],[],[],[],[],[],[]] this array is the files of the manifest file
     let SourceFiles = getfilesManifest(repoLoc, R_ManifestLoc);
 
     //creates the new manifest file and saves the manifest file directory
@@ -27,7 +28,8 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     //if they are, overwrite them and update the manifest file per file added
     for(let i = 0; i < ArraySourceLen; i++){
 
-        //first checks if file exists
+        //first checks if file exists (if directory does not exist must create directories along the way)
+
         
         //then if it doesnt exist, copy it over
 
