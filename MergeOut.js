@@ -104,11 +104,12 @@ function getfilesManifest(repoDir, manifestDir){
     //goes through all files in the manifest and both gets their path and their check sums
     const data = fs.readFileSync(repoDir + "\\.Temp\\" + manifestDir, 'UTF-8'); //gets all lines in the manifest
     let lines = data.split(/\r?\n/);  //separates all lines into an array in the manifest
+    ArraySourceLen = lines.length; // make the length of lines the length of arrays
 
     //goes through each line in the manifest
     //if the file starts with a P that infers that the line is a check sum
     //meaning its a valid file and not a date or command
-    for(let i = 0; i < lines.length; i++){
+    for(let i = 0; i < ArraySourceLen; i++){
         let line = lines[i]; //gets a single line from the array of lines
         FileSum = []; //this will be an array holding both the checksum(artifact id) and the file directory
 
