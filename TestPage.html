@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Team Success Version Control</title>
+    <!-- Links to style sheet for HTML-->
+    <link rel="stylesheet" href="https://unpkg.com/primitive-ui/dist/css/main.css"/>
+
+  </head>
+
+  <body>
+    <!-- Divider for organization and clarity-->
+    <div class="small-container">
+      <h1>Team Succes Version Control</h1>
+
+      <form>
+  <input id="item" type="text" placeholder="Enter Label here (optional)" required />        
+</form>
+  <input id="tf" type="text" placeholder="Enter Target Folder Path" required />
+<input id="df" type="text" placeholder="Enter Destination Folder Path" required/>
+        
+
+<h2>Labeled Commits</h2>
+<ul id = "Labels"></ul>
+<button id="Label">Label</button>
+<button id="Create">Create Repo</button>
+<button id="CheckIn">Check-In</button>
+<button id="CheckOut"> Check-Out</button>
+<button id="Clear"> ClearList</button>
+<button id="List"> List</button>
+<ul id = "Lisintgs"></ul>
+    </div>
+         <!-- the Script Below shows the label names created on HTML Page -->
+     <script>
+const form = document.querySelector('form')
+const Listings = document.getElementById('Listings')
+const ul = document.querySelector('ul')
+const Labelbtn = document.getElementById('Label')
+const Createbtn = document.getElementById('Create')
+const CheckInbtn = document.getElementById('CheckIn')
+const Checkoutbtn = document.getElementById('CheckOut')
+const Clearbtn = document.getElementById('Clear')
+const input = document.getElementById('item')
+const targFolder = document.getElementById('tf')
+const Destfolder = document.getElementById('df')
+//Code for Labels
+let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []
+localStorage.setItem('items', JSON.stringify(itemsArray))
+const data = JSON.parse(localStorage.getItem('items'))
+//Code for Listings
+
+
+
+//Function that displays list contents
+const liMaker = text => {
+  const li = document.createElement('li')
+  li.textContent = text
+  ul.appendChild(li)
+}
+
+Labelbtn.addEventListener('click', function(e) {
+  e.preventDefault()
+
+  itemsArray.push(input.value)
+  localStorage.setItem('items', JSON.stringify(itemsArray))
+  liMaker(input.value)
+  input.value = ''
+})
+
+data.forEach(item => {
+  liMaker(item)
+})
+         
+Clearbtn.addEventListener('click', function()
+  {
+    localStorage.clear()
+    while(ul.firstChild)
+        {
+            ul.removeChild(ul.firstChild)
+        }
+});
+      </script>
+      <!-- Debugging Statements to for HTML output-->
+      <p id ="Test">Output: </p>
+      <p id ="Checkinoutput">CheckIn Output: </p>
+
+      <!-- Below are links to the various js files -->
+      <script src = "Listings.js"></script>
+      <script src ="Label.js"></script>
+<script src ="ArtifactRunner.js"></script>
+      <script src ="ReadFiles.js"></script>
+      <script src ="CheckIn.js"></script>
+      <script src = "CheckOut.js"></script>
+      <script src ="CopyFiles.js"></script>
+      <script src = "Testjs.js"></script>
+   
+ 
+  </body>
+</html>

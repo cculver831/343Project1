@@ -31,8 +31,8 @@ function getContent(filePath){
 // this CreateArtifact function take in an argument of string for file path. It will handle all the calculation for the PLC
 // identification for ArtifactID. After calculation, it will return a string with P----,L--,C----
 function CreateArtifact(filePath){
-    let result = 0;
-    let temp = 0;
+    var result = 0;
+    var temp = 0;
     
     //calulation for the file path. Use the string for file path and calculate each character ascii value with the mulitplication
     //"loop" of 1,7,3,11. The values are all added up afterward and modded by 10000 to get the last 4 values for the P part of
@@ -80,8 +80,8 @@ function CreateArtifact(filePath){
 
     //handle calulation for the L/file size of the artifact. The returned values is then modded by 100 to return the 2 most right
     //values for the part of in the returned artifact
-    let stats = fs.statSync(filePath);
-    let fileSizeInBytes = stats["size"];
+    var stats = fs.statSync(filePath);
+    var fileSizeInBytes = stats["size"];
 
     //Else if statements habdle the number values to see if it is less than 4 digits characters to add in extra zeros before the
     //number of the File size in byte
@@ -145,3 +145,10 @@ function CreateArtifact(filePath){
     //return the result as "P####-L##-C####.txt"
     return result;
 }
+
+// export the function through node.jd to take in an argument for file path and return a string accordingly
+//module.exports = function(FilePath) {
+//  return {
+//    getArtifact : CreateArtifact(FilePath)
+//  };
+};
