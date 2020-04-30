@@ -29,12 +29,20 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     for(let i = 0; i < ArraySourceLen; i++){
 
         //first checks if file exists (if directory does not exist must create directories along the way)
-        
-        
+        if (fs.existsSync(T_BrancedRepoLoc)) {
+            //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
+            //do merge collisions
+            
+        }
         //then if it doesnt exist, copy it over
-
-        //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
-        //do merge collisions
+        else{
+            //copy files form R to T
+            fs.copyFile(SourceFiles([0][i]), T_BrancedRepoLoc, (err) => {
+            //throws error if could not copy file to destination  
+            if (err) throw err;
+            });
+        }
+        
 
         //=========================================================================================
 
