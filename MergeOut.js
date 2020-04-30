@@ -29,17 +29,51 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     for(let i = 0; i < ArraySourceLen; i++){
 
         //first checks if file exists (if directory does not exist must create directories along the way)
-        if (fs.existsSync(T_BrancedRepoLoc)) {
-            //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
-            //do merge collisions
+        let filePathSearch = SourceFiles[i][0];
+        let fileArtifactIdSearch = SourceFiles[i][1];
+
+        //get the folders of the paths for the file searching for and the T branched repo
+        let BranchDirFolders = T_BrancedRepoLoc.split("\\");
+        let fileSearchFolders = filePathSearch.split("\\");
+
+        //get rid of the last element of the sile search folder because its a file
+        let filename = fileSearchFolders.pop()
+
+        //start searching through the search folders starting from the length of the repository because they theoretically should
+        //have the same amount of elements before new ones in the directory 
+        let startingPositionFileSearch = BranchDirFolders.length();
+        let fileSearchLen = fileSearchFolders.length();
+
+        //see if the files should be in the repo or in sub folders of the repo
+        //if the folder does not exist, create it
+        if(fileSearchLen != startingPositionFileSearch){
+
+            let subfolder = T_BrancedRepoLoc; //save the current subfolder path
+            while (startingPositionFileSearch != fileSearchLen){
+                subfolder = subfolder + "\\" + fileSearchFolders[startingPositionFileSearch]; // add the new subfolder and check if exists
+
+                //check if the folder path exists
+                if (!fs.existsSync(subfolder)){
+                    fs.mkdirSync(subfolder); //makes directory if doesnt exist
+                }
+
+                startingPositionFileSearch += 1;
+            }
+        }
+
+        //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
+        if (fs.existsSync(filePathSearch)) {
             
         }
+
+
         //then if it doesnt exist, copy it over
         else{
             //copy files form R to T
-            fs.copyFile(SourceFiles([0][i]), T_BrancedRepoLoc, (err) => {
-            //throws error if could not copy file to destination  
-            if (err) throw err;
+            fs.copyFile(, fileSearchFolders, (err) => {
+            
+                //throws error if could not copy file to destination  
+                if (err) throw err;
             });
         }
         
