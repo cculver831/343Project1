@@ -37,6 +37,8 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
         let BranchDirFolders = T_BrancedRepoLoc.split("\\");
         let fileSearchFolders = filePathSearch.split("\\");
 
+        //for loop to get the path to old version
+
         //get rid of the last element of the sile search folder because its a file
         let filename = fileSearchFolders.pop()
 
@@ -64,8 +66,57 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
 
         //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
         if (fs.existsSync(filePathSearch)) {
+            //access artifactRunner to use getArtifact
+            let artifact = require('./ArtifactRunner')(String(filePathSearch));
+            //get the artifact of filePathSearch
+            let Path_aid = artifact.getArtifact;
+            //check if the new artifact ID == old version of artifact ID
+            if (fileArtifactIdSearch == Path_aid){
+                //copy files form R to T
+                fs.copyFile(manifestIDPath, fileSearchFolders, (err) => {
+                
+                    //throws error if could not copy file to destination  
+                    if (err) throw err;
+            });
+            }
+            //if the paths are different then get grandma and rename the current wo with _MT and _MR
+            // as well as getting the grandma version of it, named _GM
+            else{
+                //steal professors social security
 
-            
+                //rename target file (old) 
+                //next 3 lines update to have "_MT" to old file
+                let suffix_old = path.extname(filePathSearch) 
+                let updated_old = filePathSearch.substring(0, (str.length - suffix_old.length));
+                updated_old = updated_old + '_MT' + suffix_old
+                //replaces the name of the file
+                fs.rename(filePathSearch, updated_old, function (err) {
+                    if (err) throw err;
+                    console.log('File Renamed.');
+                });
+
+
+                //copy file form R to T because we renamed the old one
+                fs.copyFile(manifestIDPath, fileSearchFolders, (err) => {
+                //throws error if could not copy file to destination  
+                if (err) throw err;
+                });
+                
+                //rename target file (old) 
+                //next 3 lines update to have "_MR" to old file
+                let suffix_new = path.extname(filePathSearch) 
+                let updated_new = filePathSearch.substring(0, (str.length - suffix_new.length));
+                updated_new = updated_new + '_MR' + suffix_new
+                //replaces the name of the file
+                fs.rename(filePathSearch, updated_new, function (err) {
+                    if (err) throw err;
+                    console.log('File Renamed.');
+                });
+
+
+                //copy grandma file(with extension _MG) into target location as well===============================
+                //REMEMBER TO ADD EVERY FILE THAT WE COPIED OVER TO AN ARRAY SO WE CAN CREATE A MANIFEST OF SAID FILES
+            }
             
         }
 
