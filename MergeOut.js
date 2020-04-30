@@ -18,7 +18,7 @@ let ArraySourceLen; // will be the length of the manifest array
 function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
     
     //gets the files from the manifest file and saves into an array
-    //[[file path,artifact id],[],[],[],[],[],[],[]] this array is the files of the manifest file
+    //[[file path,artifact_id, manifest_path],[],[],[],[],[],[],[]] this array is the files of the manifest file
     let SourceFiles = getfilesManifest(repoLoc, R_ManifestLoc);
 
     //creates the new manifest file and saves the manifest file directory
@@ -31,6 +31,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
         //first checks if file exists (if directory does not exist must create directories along the way)
         let filePathSearch = SourceFiles[i][0];
         let fileArtifactIdSearch = SourceFiles[i][1];
+        let manifestIDPath = SourceFiles[i][2];
 
         //get the folders of the paths for the file searching for and the T branched repo
         let BranchDirFolders = T_BrancedRepoLoc.split("\\");
@@ -63,6 +64,8 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
 
         //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
         if (fs.existsSync(filePathSearch)) {
+
+            
             
         }
 
@@ -70,7 +73,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
         //then if it doesnt exist, copy it over
         else{
             //copy files form R to T
-            fs.copyFile(, fileSearchFolders, (err) => {
+            fs.copyFile(manifestIDPath, fileSearchFolders, (err) => {
             
                 //throws error if could not copy file to destination  
                 if (err) throw err;
@@ -141,7 +144,7 @@ function createManifestFile(T_BrancedRepoLoc){
 //and returns all files that are associated with that maifest file
 //as well as their corresponding check sums
 //returns these values in a 2d array in the formatt
-//[[file path,artifact id],[],[],[],[],[],[],[]]
+//[[file path,artifact id,manifest path],[],[],[],[],[],[],[]]
 function getfilesManifest(repoDir, manifestDir){
     let manifestFilesR = [];
 
@@ -163,6 +166,10 @@ function getfilesManifest(repoDir, manifestDir){
             FileSum.push(checkSum_FilePath[1])//add the path first
             FileSum.push(checkSum_FilePath[0])//add the check sum (artifact ID) second
         }
+
+        //now get the manifest path and add it to the Filesum array
+        manifestPath = manifestDir + "\\" + FileSum[1];
+        FileSum.push(manifestPath);
 
         //now add the path and check sum to the entire Folder
         manifestDir.push(FileSum)
