@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 
+
+
 let ArraySourceLen; // will be the length of the manifest array
 
 
@@ -38,7 +40,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
         let fileSearchFolders = filePathSearch.split("\\"); //splits the path of repo version of repository
 
         //get rid of the last element of the sile search folder because its a file
-        let filename = fileSearchFolders.pop() //????????????????????????????????????????????????????????
+        fileSearchFolders.pop();
 
         //start searching through the search folders starting from the length of the repository because they theoretically should
         //have the same amount of elements before new ones in the directory 
@@ -93,9 +95,9 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
 
                 //rename target file (old) 
                 //next 3 lines update to have "_MT" to old file
-                let suffix_old = path.extname(filePathSearch) 
+                let suffix_old = path.extname(filePathSearch);
                 let updated_old = filePathSearch.substring(0, (str.length - suffix_old.length));
-                updated_old = updated_old + '_MT' + suffix_old
+                updated_old = updated_old + '_MT' + suffix_old;
                 //replaces the name of the file
                 fs.rename(filePathSearch, updated_old, function (err) {
                     if (err) throw err;
@@ -114,9 +116,9 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 
                 //rename target file (old) 
                 //next 3 lines update to have "_MR" to old file
-                let suffix_new = path.extname(filePathSearch) 
+                let suffix_new = path.extname(filePathSearch); 
                 let updated_new = filePathSearch.substring(0, (str.length - suffix_new.length));
-                updated_new = updated_new + '_MR' + suffix_new
+                updated_new = updated_new + '_MR' + suffix_new;
                 //replaces the name of the file
                 fs.rename(filePathSearch, updated_new, function (err) {
                     if (err) throw err;
@@ -141,9 +143,9 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 
                 //rename target file (old) 
                 //next 3 lines update to have "_MR" to old file
-                let suffix_Grandma = path.extname(filePathSearch) 
+                let suffix_Grandma = path.extname(filePathSearch);
                 let updated_Grandma = filePathSearch.substring(0, (str.length - suffix_Grandma.length));
-                updated_Grandma = updated_Grandma + '_MG' + suffix_Grandma
+                updated_Grandma = updated_Grandma + '_MG' + suffix_Grandma;
                 //replaces the name of the file
                 fs.rename(filePathSearch, updated_Grandma, function (err) {
                     if (err) throw err;
@@ -172,17 +174,32 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
     }
 
     //create Manifest
+    let manifestLocation = createManifestFile(T_BrancedRepoLoc);
     
+    //copy the files into the manifestwith their artifact ID
+    for (let i = 0; i < manifestFiles.length; i++){
+        
+        //get the path that was aded or updated and get its artifact then add it to the manifest
+        let filepath = manifestFiles[i];
+        let artifact = require('./ArtifactRunner')(String(filepath));
+        let fileAtrifact = artifact.getArtifact;
+
+        let manifestLine = filepath + "=" + fileAtrifact;
+
+        fs.appendFile(manifestLocation, manifestLine +  "\n", function (err) {
+        if (err) throw err;
+    });
+    }
 
     //append Date and time to manifest
     let d = new Date();
-    fs.appendFile(location, d + "\n", function (err) {
+    fs.appendFile(manifestLocation, d + "\n", function (err) {
         if (err) throw err;
     });
 
     //append the command line and the arguments into the manifest
-    let command = "Command: check-in, " + R_ManifestLoc + ", " + T_BrancedRepoLoc;
-    fs.appendFile(location, command + "\n", function (err) {
+    let commandstuff = "Command: " + command + "arguments:" + repoLoc + ", " + R_ManifestLoc + ", " + T_BrancedRepoLoc;
+    fs.appendFile(manifestLocation, commandstuff + "\n", function (err) {
         if (err) throw err;
     });
 };
@@ -253,3 +270,8 @@ function getfilesManifest(repoDir, manifestDir){
     //returns all file paths along with their check sums
     return manifestFilesR;
 };
+
+
+
+
+MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', 'C:\\Users\\steve\\Desktop\\Target\\.Temp\\.man1.rc', "commands");
