@@ -109,23 +109,17 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 //add the new file path to the manifest array
                 manifestFiles.push(updated_old);
 
-                //copy file form R to T because we renamed the old one
-                fs.copyFile(manifestIDPath, filePathSearch, (err) => {
-                //throws error if could not copy file to destination  
-                if (err) throw err;
-                });
 
-
-                
                 //rename target file (old) 
                 //next 3 lines update to have "_MR" to old file
                 let suffix_new = path.extname(temppath); 
                 let updated_new = temppath.substring(0, (temppath.length - suffix_new.length));
                 updated_new = updated_new + '_MR' + suffix_new;
-                //replaces the name of the file
-                fs.rename(temppath, updated_new, function (err) {
-                    if (err) throw err;
-                    console.log('File Renamed.');
+
+                //copy file form R to T because we renamed the old one
+                fs.copyFile(manifestIDPath, updated_new, (err) => {
+                //throws error if could not copy file to destination  
+                if (err) throw err;
                 });
 
                 //add the new file path to the manifest array
