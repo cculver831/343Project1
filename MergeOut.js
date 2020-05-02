@@ -15,37 +15,35 @@ let ArraySourceLen; // will be the length of the manifest array
 //manifestLoc is a manifest file that is being PULLED from
 //branchedRepoLoc is your version of the project that you may have branced out of
 //note that all these are directories not the actal file name
-function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
+function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
     
     //gets the files from the manifest file and saves into an array
     //[[file path,artifact_id, manifest_path],[],[],[],[],[],[],[]] this array is the files of the manifest file
     let SourceFiles = getfilesManifest(repoLoc, R_ManifestLoc);
-
-    //creates the new manifest file and saves the manifest file directory
-    //let location = createManifestFile(T_BrancedRepoLoc); ------------------------------
+    
+    //files to later be placed into the manifest
+    let manifestFiles = [];
 
     //goes through array of file paths and checks if they are similar to any file in the repository
     //if they are, overwrite them and update the manifest file per file added
     for(let i = 0; i < ArraySourceLen; i++){
 
         //first checks if file exists (if directory does not exist must create directories along the way)
-        let filePathSearch = SourceFiles[i][0];
-        let fileArtifactIdSearch = SourceFiles[i][1];
-        let manifestIDPath = SourceFiles[i][2];
+        let filePathSearch = SourceFiles[i][0]; //file path from manifest (location of T)
+        let fileArtifactIdSearch = SourceFiles[i][1]; // artifact id for file (from manifest) (from R)
+        let manifestIDPath = SourceFiles[i][2]; // path to manifest version of the old file (from R)
 
         //get the folders of the paths for the file searching for and the T branched repo
-        let BranchDirFolders = T_BrancedRepoLoc.split("\\");
-        let fileSearchFolders = filePathSearch.split("\\");
-
-        //for loop to get the path to old version
+        let BranchDirFolders = T_BrancedRepoLoc.split("\\"); //splits path of repository into folders
+        let fileSearchFolders = filePathSearch.split("\\"); //splits the path of repo version of repository
 
         //get rid of the last element of the sile search folder because its a file
-        let filename = fileSearchFolders.pop()
+        let filename = fileSearchFolders.pop() //????????????????????????????????????????????????????????
 
         //start searching through the search folders starting from the length of the repository because they theoretically should
         //have the same amount of elements before new ones in the directory 
-        let startingPositionFileSearch = BranchDirFolders.length();
-        let fileSearchLen = fileSearchFolders.length();
+        let startingPositionFileSearch = BranchDirFolders.length(); //will be the folder location of the repository
+        let fileSearchLen = fileSearchFolders.length(); //will be folder of repo + any other possible new folders to add to the repo
 
         //see if the files should be in the repo or in sub folders of the repo
         //if the folder does not exist, create it
@@ -64,21 +62,30 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
             }
         }
 
-        //if it does exist, compare the check sums, if the check sums are the same ignore it, if not
+        //if file does exist in repo, compare the check sums, if the check sums are the same ignore it, if not
+        //then its a collision and must handle it
         if (fs.existsSync(filePathSearch)) {
+
             //access artifactRunner to use getArtifact
             let artifact = require('./ArtifactRunner')(String(filePathSearch));
+            
             //get the artifact of filePathSearch
             let Path_aid = artifact.getArtifact;
+            
             //check if the new artifact ID == old version of artifact ID
             if (fileArtifactIdSearch == Path_aid){
+                
                 //copy files form R to T
-                fs.copyFile(manifestIDPath, fileSearchFolders, (err) => {
+                fs.copyFile(manifestIDPath, filePathSearch, (err) => {
                 
                     //throws error if could not copy file to destination  
                     if (err) throw err;
-            });
+                });
+
+                //add the new file path to the manifest array
+                manifestFiles.push(filePathSearch);
             }
+
             //if the paths are different then get grandma and rename the current wo with _MT and _MR
             // as well as getting the grandma version of it, named _GM
             else{
@@ -95,9 +102,12 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
                     console.log('File Renamed.');
                 });
 
+                //add the new file path to the manifest array
+                manifestFiles.push(updated_old);
+
 
                 //copy file form R to T because we renamed the old one
-                fs.copyFile(manifestIDPath, fileSearchFolders, (err) => {
+                fs.copyFile(manifestIDPath, filePathSearch, (err) => {
                 //throws error if could not copy file to destination  
                 if (err) throw err;
                 });
@@ -113,9 +123,35 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
                     console.log('File Renamed.');
                 });
 
+                //add the new file path to the manifest array
+                manifestFiles.push(updated_new);
+
 
                 //copy grandma file(with extension _MG) into target location as well===============================
                 //REMEMBER TO ADD EVERY FILE THAT WE COPIED OVER TO AN ARRAY SO WE CAN CREATE A MANIFEST OF SAID FILES
+
+                let GrandmaManifest;
+                let GrandmaFile;
+
+                //copy file form R to T because we renamed the old one
+                fs.copyFile(GrandmaFile, filePathSearch, (err) => {
+                //throws error if could not copy file to destination  
+                if (err) throw err;
+                });
+                
+                //rename target file (old) 
+                //next 3 lines update to have "_MR" to old file
+                let suffix_Grandma = path.extname(filePathSearch) 
+                let updated_Grandma = filePathSearch.substring(0, (str.length - suffix_Grandma.length));
+                updated_Grandma = updated_Grandma + '_MG' + suffix_Grandma
+                //replaces the name of the file
+                fs.rename(filePathSearch, updated_Grandma, function (err) {
+                    if (err) throw err;
+                    console.log('File Renamed.');
+                });
+
+                //add the new file path to the manifest array
+                manifestFiles.push(updated_Grandma);
             }
             
         }
@@ -124,31 +160,19 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc){
         //then if it doesnt exist, copy it over
         else{
             //copy files form R to T
-            fs.copyFile(manifestIDPath, fileSearchFolders, (err) => {
+            fs.copyFile(manifestIDPath, filePathSearch, (err) => {
             
                 //throws error if could not copy file to destination  
                 if (err) throw err;
             });
+
+            //add the new file path to the manifest array
+            manifestFiles.push(filePathSearch);
         }
-        
-
-        //=========================================================================================
-
-        //copy file to folder, if it already exists, overwrite it
-        fs.copyFile(String(SourceFiles[i]), path.join(String(T_BrancedRepoLoc) + "\\"  + ".Temp" + "\\" + artifact.getArtifact), (err) => {
-            //throws error if could not copy file to destination  
-            if (err) throw err;
-        });
-
-        //MANIFEST
-        //write the file into the manifest file
-        //let fileInformation = artifact.getArtifact + "=" + SourceFiles[i] + "\n"; ----------------------------------
-
-        //appends info into files (file destination, content, error) ----------------------
-        //fs.appendFile(location, fileInformation, function (err) { -----------------------------------------------
-        //    if (err) throw err; ----------------------------------------------------------
-        //});
     }
+
+    //create Manifest
+    
 
     //append Date and time to manifest
     let d = new Date();
