@@ -150,11 +150,47 @@ function getLatestManifestNum(userGivenPath){
 }
 
 
+
+
+//Returns an array with all manifest files
+function getManifestFiles(userGivenPath){
+
+    maniFiles = [];
+    
+    //goes to the temp directory directly (change the temp into any directory name if you change the name)
+    let manifestDir = path.join(userGivenPath + '\\' + '.Temp');
+
+    //if the temp file does not already exist, it will not check for it, this is to avoid creating a new temp file when looking through
+    //the source file
+    if (!fs.existsSync(manifestDir)){
+        return 0;
+    }
+
+
+
+    //gets an array of everything in the path
+    let manifestFilesInDir = fs.readdirSync(manifestDir);
+
+    for(let i in manifestFilesInDir){
+
+        let filename = manifestFilesInDir[i];
+        //manifest files names .man<int>.rc accordingly, this lists the latest (biggest) num of mainifest files
+        if(filename.length > 4 && path.basename(filename.substring(0,4)) == '.man'){
+
+            maniFiles.push(filename);
+        }
+    }
+    return maniFiles;
+    
+}
+
+
 //this returns the array to be used by other javascript files 
 //user has to give full path of the folder
 module.exports = function(FilePath) {
     return {
         ArrayResult : returnAllFilesInDirectory(FilePath),
-        latestManiFile : getLatestManifestNum(FilePath)
+        latestManiFile : getLatestManifestNum(FilePath),
+        getManifestFiles : getManifestFiles(FilePath)
     };
 };
