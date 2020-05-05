@@ -86,7 +86,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 });
 
                 //add the new file path to the manifest array
-                manifestFiles.push(filePathSearch);
+                manifestFiles.push([filePathSearch, Path_aid]);
             }
 
             //if the paths are different then get grandma and rename the current wo with _MT and _MR
@@ -107,7 +107,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 });
 
                 //add the new file path to the manifest array
-                manifestFiles.push(updated_old);
+                manifestFiles.push([updated_old, fileArtifactIdSearch]);
 
 
                 //rename target file (old) 
@@ -123,7 +123,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 });
 
                 //add the new file path to the manifest array
-                manifestFiles.push(updated_new);
+                manifestFiles.push([updated_new, fileArtifactIdSearch]);
 
                 //get the grandma manifest file
                 let maniLoc = repoLoc + "\\" + ".Temp" + "\\" + R_ManifestLoc;
@@ -164,7 +164,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                             });
 
                             //add the new file path to the manifest array
-                            manifestFiles.push(updated_Grandma);
+                            manifestFiles.push([updated_Grandma, artifactIDPortion]);
                         }
                     }
 
@@ -184,8 +184,14 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 if (err) throw err;
             });
 
+            //access artifactRunner to use getArtifact
+            let artifact = require('./ArtifactRunner')(String(filePathSearch));
+            
+            //get the artifact of filePathSearch
+            let Path_aid = artifact.getArtifact;
+
             //add the new file path to the manifest array
-            manifestFiles.push(filePathSearch);
+            manifestFiles.push([filePathSearch, Path_aid]);
         }
     }
 
@@ -196,9 +202,8 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
     for (let i = 0; i < manifestFiles.length; i++){
         
         //get the path that was aded or updated and get its artifact then add it to the manifest
-        let filepath = manifestFiles[i];
-        let artifact = require('./ArtifactRunner')(String(filepath));
-        let fileAtrifact = artifact.getArtifact;
+        let filepath = manifestFiles[i][0];
+        let fileAtrifact = manifestFiles[i][1];
 
         let manifestLine = fileAtrifact + "=" + filepath;
 
