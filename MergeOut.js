@@ -128,24 +128,45 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 //get the grandma manifest file
                 let grandmaManif = require('./GetGrandma')(repoLoc, manifestIDPath);
 
-                //now look for the file 
-                
+                //now look for the file that has a similar P portion of the artifact ID
+                let maniFileGrandma = grandmaManif.GetGrandma;
+                let allFilesInGrandma = maniFileGrandma.GetGrandma;
+                let maniData = fs.readFileSync(allFilesInGrandma,'UTF-8');
+                let maniLines = maniData.split(/\r?\n/); 
+                for (let i = 0; i < maniLines.length; i++){
+
+                    let currentLine = maniLines[i];
+
+                    //if the P portion are similar on both ends, copy it to the manifest file as the grandma
+                    if(currentLine[0] == "P"){
+
+                        let artifactIdArr = currentLine.split("=");
+                        let artifactIDPortion = artifactIdArr[0];
+                        let pathPortion = artifactIdArr[1];
+                        currLineSub = artifactIDPortion.substring(0,5);
+                        misMatchManiFileSub = filePathSearch.substring(0,5);
+                        
+                        if(currLineSub == misMatchManiFileSub){
 
 
-                //rename target file (old) 
-                //next 3 lines update to have "_MR" to old file
-                let suffix_Grandma = path.extname(filePathSearch);
-                let updated_Grandma = filePathSearch.substring(0, (str.length - suffix_Grandma.length));
-                updated_Grandma = updated_Grandma + '_MG' + suffix_Grandma;
+                            //rename target file (old) 
+                            //next 3 lines update to have "_MR" to old file
+                            let suffix_Grandma = path.extname(pathPortion);
+                            let updated_Grandma = pathPortion.substring(0, (str.length - suffix_Grandma.length));
+                            updated_Grandma = updated_Grandma + '_MG' + suffix_Grandma;
 
-                //copy file form R to T because we renamed the old one
-                fs.copyFile(GrandmaFile, filePathSearch, (err) => {
-                //throws error if could not copy file to destination  
-                if (err) throw err;
-                });
+                            //copy file form R to T because we renamed the old one
+                            fs.copyFile(pathPortion, updated_Grandma, (err) => {
+                            //throws error if could not copy file to destination  
+                            if (err) throw err;
+                            });
 
-                //add the new file path to the manifest array
-                manifestFiles.push(updated_Grandma);
+                            //add the new file path to the manifest array
+                            manifestFiles.push(updated_Grandma);
+                        }
+                    }
+
+                }
             }
             
         }
