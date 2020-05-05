@@ -125,31 +125,27 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
                 //add the new file path to the manifest array
                 manifestFiles.push(updated_new);
 
-                //copy grandma file(with extension _MG) into target location as well===============================
-                //REMEMBER TO ADD EVERY FILE THAT WE COPIED OVER TO AN ARRAY SO WE CAN CREATE A MANIFEST OF SAID FILES
+                //get the grandma manifest file
+                let grandmaManif = require('./GetGrandma')(repoLoc, manifestIDPath);
 
-                // let GrandmaManifest;
-                // let GrandmaFile;
-
-                // //copy file form R to T because we renamed the old one
-                // fs.copyFile(GrandmaFile, filePathSearch, (err) => {
-                // //throws error if could not copy file to destination  
-                // if (err) throw err;
-                // });
+                //now look for the file 
                 
-                // //rename target file (old) 
-                // //next 3 lines update to have "_MR" to old file
-                // let suffix_Grandma = path.extname(filePathSearch);
-                // let updated_Grandma = filePathSearch.substring(0, (str.length - suffix_Grandma.length));
-                // updated_Grandma = updated_Grandma + '_MG' + suffix_Grandma;
-                // //replaces the name of the file
-                // fs.rename(filePathSearch, updated_Grandma, function (err) {
-                //     if (err) throw err;
-                //     console.log('File Renamed.');
-                // });
 
-                // //add the new file path to the manifest array
-                // manifestFiles.push(updated_Grandma);
+
+                //rename target file (old) 
+                //next 3 lines update to have "_MR" to old file
+                let suffix_Grandma = path.extname(filePathSearch);
+                let updated_Grandma = filePathSearch.substring(0, (str.length - suffix_Grandma.length));
+                updated_Grandma = updated_Grandma + '_MG' + suffix_Grandma;
+
+                //copy file form R to T because we renamed the old one
+                fs.copyFile(GrandmaFile, filePathSearch, (err) => {
+                //throws error if could not copy file to destination  
+                if (err) throw err;
+                });
+
+                //add the new file path to the manifest array
+                manifestFiles.push(updated_Grandma);
             }
             
         }
