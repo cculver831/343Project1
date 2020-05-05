@@ -171,4 +171,4 @@ module.exports = function(repo, manif) {
 };
 
 
-console.log(GetGrandma("D:\\343 Project\\Target", "D:\\343 Project\\Target\\.Temp\\.man3.rc"))
+//console.log(GetGrandma("D:\\343 Project\\Target", "D:\\343 Project\\Target\\.Temp\\.man3.rc"))
