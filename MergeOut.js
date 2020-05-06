@@ -296,4 +296,4 @@ function getfilesManifest(repoDir, manifestDir){
 
 
 
-MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '.man10.rc', "commands");
+//MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '.man10.rc', "commands");
