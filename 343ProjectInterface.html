@@ -15,11 +15,12 @@
     <div class="small-container">
       <h1>Team Succes Version Control</h1>
 
-      <form>
-  <input id="item" type="text" placeholder="Enter Label here (optional)" required />        
-</form>
-  <input id="tf" type="text" placeholder="Enter Target Folder Path" required />
+      <form id="user-input" method="POST" action="/343ProjectInterface">
+  <input id="item" type="text" placeholder="Enter Label here (optional)" required /> 
+            <input id="tf" type="text" placeholder="Enter Target Folder Path" required/>
 <input id="df" type="text" placeholder="Enter Destination Folder Path" required/>
+</form>
+
         
 
 <h2>Labeled Commits</h2>
@@ -87,13 +88,8 @@ Clearbtn.addEventListener('click', function()
       <p id ="Checkinoutput">CheckIn Output: </p>
 
       <!-- Below are links to the various js files -->
-      <script src = "Listings.js"></script>
-      <script src ="Label.js"></script>
-<script src ="ArtifactRunner.js"></script>
-      <script src ="ReadFiles.js"></script>
-      <script src ="CheckIn.js"></script>
-      <script src = "CheckOut.js"></script>
-      <script src ="CopyFiles.js"></script>
+      
+<script src = "SuperFile.js" ></script>
    
  
   </body>

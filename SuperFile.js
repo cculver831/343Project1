@@ -4,10 +4,13 @@
 
 
 
-//Createbtn.addEventListener("click", function(){
-//  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
-//});
-copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target');
+Createbtn.addEventListener("click", function(){
+  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
+    var tf = document.getElementById("tf").value;
+    var df = document.getElementById("df").value;
+    copFiles(tf,df);
+});
+//copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target');
 
 
 const fs = require('fs');
