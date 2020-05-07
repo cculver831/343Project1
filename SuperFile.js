@@ -7,8 +7,21 @@
 //Createbtn.addEventListener("click", function(){
 //  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
 //});
-copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target');
 
+//create repo ---
+//copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target'); // project 1 works
+
+//push --- (check in)
+//copyFilesToRepository('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target'); //project 2 works
+//location = manifestFile('C:\\Users\\steve\\Desktop\\Target') // project 2 works
+//create label
+//addLabel(location, 'ThisFuckingClassSucks') // project 2 works
+//Listfunc(location) // project 2 works
+
+//initial pull -- (check out)
+//CheckOut('C:\\Users\\steve\\Desktop\\Target', 'C:', '.man1.rc') //project 2 works
+//resultLoc = getManifest('C:\\Users\\steve\\Desktop\\Target', '.man1.rc') //project 2 works
+//Listfunc(resultLoc) // project 2 works
 
 const fs = require('fs');
 const path = require('path');
@@ -24,6 +37,10 @@ const path = require('path');
 //wantPath =  boolean to return the full path of the files too, true to return whole path, false to only return file
 //targetFold = the folder that you would want to target in the directory you give [(" ") if you want everything in that directory]
 function getFiles (dir, targetFold, wantPath){
+
+    const fs = require('fs');
+    const path = require('path');
+  
     let myArray = [];
     
     //gets the current directory (CD/STEVESCOMPUTER//Desktop) (dir should be "__filename" to work 
@@ -93,7 +110,8 @@ function getFiles (dir, targetFold, wantPath){
 //both prints the files and returns all the files into an array with everything besides the direcroties (includes files in other folders)
 //returns the final array containing all the files (no nested arrays will exist in the final array made the mistake of doing so earlier but corrected it)
 function printTheFilesAndReturnArray(arryFromGetFiles, finalArrayToInsertTo){
-
+    const fs = require('fs');
+    const path = require('path');
 
     for(let i in arryFromGetFiles){
 
@@ -182,6 +200,8 @@ function getLatestManifestNum(userGivenPath){
 //==================================================================================================================================
 function copyFiles(sourceFolder,targetFolder)
 {
+  const fs = require('fs');
+  const path = require('path');
   let dir =  path.join(targetFolder + '\\' +'.Temp');
 
   if (!fs.existsSync(dir)){
@@ -248,6 +268,8 @@ function copyFiles(sourceFolder,targetFolder)
 //==================================================================================================================================
 //gets content of a file due to its path
 function getContent(filePath){
+  const fs = require('fs');
+  const path = require('path');
   try {
     //read data from file
     const data = fs.readFileSync(filePath, 'utf8')
@@ -436,6 +458,8 @@ function getProjectTree(UpSourceTreeDir){
 //additionally, it creates a new manifest file and copies all contents copied and overwritten into the manifest file along with the date/time
 //and command used to run the check in
 function copyFilesToRepository(UpSourceTreeDir, RepositoryDir){
+  const fs = require('fs');
+  const path = require('path');
     
     //gets the files from the source
     let SourceFiles = getProjectTree(UpSourceTreeDir);
@@ -489,6 +513,9 @@ function copyFilesToRepository(UpSourceTreeDir, RepositoryDir){
 //returns the location of the manifest file
 function createManifestFile(RepositoryDir){
 
+    const fs = require('fs');
+    const path = require('path');
+
     //reads the latest manifest file in the repository
     let RepLatestMani = getLatestManifestNum(String(RepositoryDir));
 
@@ -507,6 +534,10 @@ function createManifestFile(RepositoryDir){
 
 function manifestFile(RepositoryDir)
 {
+
+    const fs = require('fs');
+    const path = require('path');
+
     let RepLatestMani = getLatestManifestNum(String(RepositoryDir));
 
     //creates a new manifest file in the repository
@@ -541,6 +572,10 @@ module.exports = function(SourceFolder,Repository) {
 
  function CheckOut(repo, dest, manif)
  {
+
+  const fs = require('fs');
+  const path = require('path');
+
      let files = fs.readdirSync(String(repo + "\\.Temp")); 
 
      try{
@@ -689,6 +724,10 @@ module.exports = function(SourceFolder,Repository) {
  
  function getManifest(repo, manif)
  {
+
+    const fs = require('fs');
+    const path = require('path');
+
      let files = fs.readdirSync(String(repo + "\\.Temp")); 
      try{
          if(manif.slice(-2) == 'rc')
@@ -764,9 +803,10 @@ module.exports = function(SourceFolder,Repository) {
  * string newLabel the label to be assigned to the manifest
  */
 function addLabel(Mloc, newLabel){
+  const fs = require('fs');
+  const path = require('path');
     
   let prependFile = require('prepend-file');
-  const fs = require('fs');
 
 
   let labels;
@@ -838,6 +878,8 @@ function addLabel(Mloc, newLabel){
 
 function Listfunc(manifest)
 {
+
+
     const fs = require('fs')
     let data = fs.readFileSync(manifest, 'UTF-8');
 
