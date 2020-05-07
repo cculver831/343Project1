@@ -4,9 +4,9 @@
 
 
 
-Createbtn.addEventListener("click", function(){
-  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
-});
+//Createbtn.addEventListener("click", function(){
+//  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
+//});
 copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target');
 
 
