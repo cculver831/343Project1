@@ -4,13 +4,24 @@
 
 
 
-Createbtn.addEventListener("click", function(){
- document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
- copyFiles(DestFolder.value,targFolder.value);
-});
+//Createbtn.addEventListener("click", function(){
+//  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
+//});
 
+//create repo ---
+//copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target'); // project 1 works
 
+//push --- (check in)
+//copyFilesToRepository('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target'); //project 2 works
+//location = manifestFile('C:\\Users\\steve\\Desktop\\Target') // project 2 works
+//create label
+//addLabel(location, 'ThisFuckingClassSucks') // project 2 works
+//Listfunc(location) // project 2 works
 
+//initial pull -- (check out)
+//CheckOut('C:\\Users\\steve\\Desktop\\Target', 'C:', '.man1.rc') //project 2 works
+//resultLoc = getManifest('C:\\Users\\steve\\Desktop\\Target', '.man1.rc') //project 2 works
+//Listfunc(resultLoc) // project 2 works
 
 const fs = require('fs');
 const path = require('path');
@@ -26,8 +37,10 @@ const path = require('path');
 //wantPath =  boolean to return the full path of the files too, true to return whole path, false to only return file
 //targetFold = the folder that you would want to target in the directory you give [(" ") if you want everything in that directory]
 function getFiles (dir, targetFold, wantPath){
+
     const fs = require('fs');
     const path = require('path');
+  
     let myArray = [];
     
     //gets the current directory (CD/STEVESCOMPUTER//Desktop) (dir should be "__filename" to work 
@@ -411,17 +424,475 @@ function CreateArtifact(filePath){
     return result;
 }
 
-// export the function through node.jd to take in an argument for file path and return a string accordingly
-//module.exports = function(FilePath) {
-//  return {
-//    getArtifact : CreateArtifact(FilePath)
-//  };
-
 
 //==================================================================================================================================
 //==================================================================================================================================
 //==================================================================================================================================
 
 
+//Steven Centeno
+//completed 3/26/2020
+
+//this file is means to act like a "push" to the repository
+
+//this is used as a global variable to be used by the copy to reposiory file
+var ArraySourceLen;
 
 
+//this function gets the source tree files and returns them in an array
+//the upsource tree variable is the full path of the updated source tree
+function getProjectTree(UpSourceTreeDir){
+
+    //read files from the source file (is var so that the variable can be used globally aka outside of the method)
+    var readFile = returnAllFilesInDirectory(String(UpSourceTreeDir));
+    ArraySourceLen = readFile.length;
+    return readFile;
+}
+
+
+
+
+
+//gets everything from the source Folder (from the getProjectTree function) and searches through the files and compares it with 
+//the files existing in the repository. If the files already exist in there, it gets overwritten (also takes labels into account)
+//additionally, it creates a new manifest file and copies all contents copied and overwritten into the manifest file along with the date/time
+//and command used to run the check in
+function copyFilesToRepository(UpSourceTreeDir, RepositoryDir){
+  const fs = require('fs');
+  const path = require('path');
+    
+    //gets the files from the source
+    let SourceFiles = getProjectTree(UpSourceTreeDir);
+    
+    //creates the new manifest file and saves the manifest file directory
+    let location = createManifestFile(RepositoryDir);
+
+    //goes through array of file paths and checks if they are similar to any file in the repository
+    //if they are, overwrite them and update the manifest file per file added
+    console.log(ArraySourceLen);
+    for(let i = 0; i < ArraySourceLen; i++){
+    
+            //gets the artifact ID of each file and compares it to the 
+            let artifact = CreateArtifact(String(SourceFiles[i]));
+
+
+            //copy file to folder, if it already exists, overwrite it
+            fs.copyFile(String(SourceFiles[i]), path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + artifact), (err) => {
+                //throws error if could not copy file to destination  
+                if (err) throw err;
+            });
+
+            //MANIFEST
+            //write the file into the manifest file
+            let fileInformation = artifact + "=" + SourceFiles[i] + "\n";
+
+            //appends info into files (file destination, content, error)
+            fs.appendFile(location, fileInformation, function (err) {
+                if (err) throw err;
+            });
+    }
+
+    //append Date and time to manifest
+    let d = new Date();
+    fs.appendFile(location, d + "\n", function (err) {
+        if (err) throw err;
+    });
+
+    //append the command line and the arguments into the manifest
+    let command = "Command: check-in, " + UpSourceTreeDir + ", " + RepositoryDir;
+    fs.appendFile(location, command + "\n", function (err) {
+        if (err) throw err;
+    });
+}
+
+
+
+
+
+//creates a mainifest file in the repository
+//returns the location of the manifest file
+function createManifestFile(RepositoryDir){
+
+    const fs = require('fs');
+    const path = require('path');
+
+    //reads the latest manifest file in the repository
+    let RepLatestMani = getLatestManifestNum(String(RepositoryDir));
+
+    //creates a new manifest file in the repository
+    var location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(Number(RepLatestMani) + 1) + ".rc" )
+    fs.appendFile(location, "Commit " + ((Number(RepLatestMani)) + 1)  + ".source:\n", function (err) {
+
+        //throws error if could not append file  
+        if (err) throw err;
+    });
+
+    return location;
+    
+// document.getElementById("Checkinoutput").innerHTML += "Congratulations! CheckIn Complete";
+}
+
+function manifestFile(RepositoryDir)
+{
+
+    const fs = require('fs');
+    const path = require('path');
+
+    let RepLatestMani = getLatestManifestNum(String(RepositoryDir));
+
+    //creates a new manifest file in the repository
+    var location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(RepLatestMani) + ".rc" )
+    return location;
+}
+
+
+
+//exports the function
+module.exports = function(SourceFolder,Repository) {
+    return {
+        Result : copyFilesToRepository(SourceFolder,Repository),
+        Location : manifestFile(Repository)
+    };
+};
+
+
+//==================================================================================================================================
+//==================================================================================================================================
+//====================================================================================================================End of checkin
+
+
+
+//Hanson Nguyen
+/**
+ * Checkout Feature:
+ * allows the user to copy files from the version control into and existing folder
+ */
+ //paramater passed through will be source repository, destination, and manifest file name or label
+ //the character '|' means there is a label
+
+ function CheckOut(repo, dest, manif)
+ {
+
+  const fs = require('fs');
+  const path = require('path');
+
+     let files = fs.readdirSync(String(repo + "\\.Temp")); 
+
+     try{
+         //Create Folder with dir directory if the manifest/label exist and folder doesn't exist
+         if (!fs.existsSync(dest)){
+             fs.mkdirSync(dest);
+         }
+         //print the array to check if everything seems correct
+         //console.log(lines);
+ 
+         
+         //Check if the argument passed into the manifest is a file is a valid manifest file
+         if(manif.slice(-2) == 'rc')
+         {
+             // read contents of the file
+             let data = fs.readFileSync(repo + "\\.Temp\\" + manif, 'UTF-8');
+             let lines = data.split(/\r?\n/);
+ 
+             // Loops through the data in the confirmed manifest file and carry logic accordingly
+             for(let i = 0; i < lines.length; i++)
+             {
+                 let line = lines[i];
+                 // Check if the first letter of the line is P for the file 
+                 if(line[0] == "P")
+                 {
+                     let comp = line.split("=");
+                     console.log(comp);
+                     let folders = comp[1].split("\\");
+                     folders.splice(0,1);
+                     let name = folders.pop();
+                     // Loop through each components folder of the path and ger rid of
+                     for(let index = 0; index < folders.length; index++)
+                     {
+                         // Add the directory folders with the last folders, ending result will be the full path of the folder
+                         if(index != 0)
+                         {
+                             folders[index] = folders[index-1] + "\\" +  folders[index];
+                         }
+                     }
+ 
+                     console.log(folders);
+                     // Make the folder indiviually with the given path from the beginning to end
+                     for(let a = 0; a < folders.length; a++)
+                     {
+                         if (!fs.existsSync(dest + "\\" + folders[a])){
+                             fs.mkdirSync(dest + "\\" + folders[a]);
+                         }
+                     }
+                     
+                     //copy files to those newly created folders
+                     fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
+                         //throws error if could not copy file to destination  
+                       if (err) throw err;
+                     });
+ 
+                 }
+             }   
+             console.log("Completed Command");
+         }
+         // else if to check if the user passed in a valid foratted label
+         else if(manif[0] == '|')
+         {
+             for(let i = 0; i < files.length; i++)
+             {
+                 if(files[i].slice(-2) == "rc")
+                 {
+                     // read contents of the file
+                     let data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
+                     let lines = data.split(/\r?\n/);
+                     //check is the first line of the manifest
+                     let check = lines[0];
+                     if(check[0] == '|')
+                     {
+                         // split out the first lines to check if there's any labels
+                         let labels = check.split("|");
+                         // for loops to check if the labels the user inputted in the manifest file
+                         for(let i = 0; i < labels.length; i++)
+                         {
+                             if(labels[i] != "" &&  "|"+ labels[i] == manif)
+                             {
+ 
+                                 // go through each lines to check for artifact name and file data
+                                 for(let i = 0; i < lines.length; i++)
+                                 {
+                                     let line = lines[i];
+                                     // Check if the first letter of the line is P for the file 
+                                     if(line[0] == "P")
+                                     {
+                                         let comp = line.split("=");
+                                         console.log(comp);
+                                         let folders = comp[1].split("\\");
+                                         folders.splice(0,1);
+                                         let name = folders.pop();
+                                         // Loop through each components folder of the path and ger rid of
+                                         for(let index = 0; index < folders.length; index++)
+                                         {
+                                             // Add the directory folders with the last folders, ending result will be the full path of the folder
+                                             if(index != 0)
+                                             {
+                                                 folders[index] = folders[index-1] + "\\" +  folders[index];
+                                             }
+                                         }
+                                         
+                                         console.log(folders);
+                                         // Make the folder indiviually with the given path from the beginning to end
+                                         for(let a = 0; a < folders.length; a++)
+                                         {
+                                             if (!fs.existsSync(dest + "\\" + folders[a])){
+                                                 fs.mkdirSync(dest + "\\" + folders[a]);
+                                             }
+                                         }
+                                         //copy files to those newly created folders
+                                         fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
+                                             //throws error if could not copy file to destination  
+                                         if (err) throw err;
+                                         });
+ 
+                                     }
+                                 }   
+                                 console.log("Completed Command");
+                             }
+                             
+                         }
+                     }
+                     else
+                     {
+                         console.log("there was no valid label or valid manifest file")
+                     }
+                 }
+             }
+             
+         }
+         
+ 
+         
+ 
+ 
+     } catch (err) {
+         console.error(err);
+     }
+    
+ 
+ 
+ }
+ 
+ 
+ function getManifest(repo, manif)
+ {
+
+    const fs = require('fs');
+    const path = require('path');
+
+     let files = fs.readdirSync(String(repo + "\\.Temp")); 
+     try{
+         if(manif.slice(-2) == 'rc')
+         {
+             // return manifest
+             return repo + "\\.Temp\\" + manif;
+         }
+         else if(manif[0] == '|')
+         {
+             for(let i = 0; i < files.length; i++)
+             {
+                 if(files[i].slice(-2) == "rc")
+                 {
+                     // read contents of the file
+                     const data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
+                     let lines = data.split(/\r?\n/);
+                     //check is the first line of the manifest
+                     let check = lines[0];
+                     if(check[0] == '|')
+                     {
+                         // split out the first lines to check if there's any labels
+                         let labels = check.split("|");
+                         // for loops to check if the labels the user inputted in the manifest file
+                         for(let x = 0; x < labels.length; x++)
+                         {
+                             if(labels[x] != "" &&  "|"+ labels[x] == manif)
+                             {
+                                 return repo + "\\.Temp\\" + files[i];
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+         else{
+             console.log("invalid manifest file or label");
+             throw console.error();
+         }
+     }
+     catch (err) {
+         console.error(err);
+     }
+ }
+ 
+ //Test function, no longer needed
+ //CheckOut("D:\\343 Project\\Target", "D:\\343 Project\\Tree","|Test")
+
+
+//==================================================================================================================================
+//==================================================================================================================================
+//===================================================================================================================End of checkout
+
+
+//Burgos Joseph
+/**
+ * Label Feature:
+ * allows the user to associate a label with a given manifest file, in order to make it easier
+ * for us, the user, to remember and identify a particular project tree snapshot when issuing commands to our vcs
+ */
+ //given a manifest file location and a label string
+ //the character '|' means there is another label
+
+        //Code for HTML
+// Labelbtn.addEventListener("click", Test);
+// Labelbtn.addEventListener("click", addLabel(targFolder.value, input.value));
+// function Test()
+// {
+//     document.getElementById("Test").innerHTML += "Test from Label Script";
+// }
+/**
+ * addLabel adds a label to a given manifest file
+ * string MLoc is the Manifest Location
+ * string newLabel the label to be assigned to the manifest
+ */
+function addLabel(Mloc, newLabel){
+  const fs = require('fs');
+  const path = require('path');
+    
+  let prependFile = require('prepend-file');
+
+
+  let labels;
+  //get data from text file
+  try {
+      // read contents of the file
+      let data = fs.readFileSync(Mloc, 'UTF-8');
+
+      // split the contents by new line
+      let lines = data.split(/\r?\n/);
+      
+      //print the array to check if everything seems correct
+      //console.log(lines);
+
+      //check is the first line of the manifest
+      let check = lines[0];
+      //if labels exist, add new label given
+      if(check[0] == '|'){
+
+          //add new label--------------replace label here
+          lines[0] = lines[0] + "|" + newLabel + "\n";//changed input.value -> newLabel
+          
+          //replace first line
+          fs.writeFile(Mloc, (lines[0]), function (err) {
+              if (err) throw err;
+          });
+          
+
+          //add the rest of lines
+          let manifestData = "";
+          let i;
+          for(i = 1; i < lines.length; i++) {
+              //dont insert new line when at the last loop
+              if(i == lines.length - 1){
+                  lines[i] = lines[i];
+                  manifestData += lines[i];  
+              }
+              else{
+                  lines[i] = lines[i] + "\n";
+                  manifestData += lines[i];
+              }
+              
+          };
+          fs.appendFile(Mloc, manifestData, function (err) {
+              if (err) throw err;
+          });
+      }
+      //if there is no labels, then prepend
+      else{
+          //----------replace label here
+          labels = "|" + newLabel + "\n"; //changed input.value -> newLabel
+          prependFile(Mloc, labels, function (err) {
+              if (err) {
+                  // Error
+                  console.log("Couldnt add")
+              }
+          });
+      }
+      } catch (err) {
+          console.error(err);
+  }
+}
+
+
+
+//==================================================================================================================================
+//==================================================================================================================================
+//======================================================================================================================End of label
+
+function Listfunc(manifest)
+{
+
+
+    const fs = require('fs')
+    let data = fs.readFileSync(manifest, 'UTF-8');
+
+    // split the contents by new line
+    let lines = data.split(/\r?\n/);
+    //Variables to access and mainttain listings    
+
+    console.log("Displaying manifest file!")
+    
+    //Loop for Manifest to be printed out
+    for(let i = 0; i < lines.length; i++)
+        {
+            console.log(lines[i])
+        }
+//     
+}
