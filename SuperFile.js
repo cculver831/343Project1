@@ -939,7 +939,7 @@ function getManifestFiles(userGivenPath){
   
 }
 
-let ArraySourceLen = 0; // will be the length of the manifest array global variable DONT DELETE
+let ArraySourceLenMerge = 0; // will be the length of the manifest array global variable DONT DELETE
 
 
 //this basically works as a pull that is being done ages after the last pull 
@@ -965,7 +965,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
 
     //goes through array of file paths and checks if they are similar to any file in the repository
     //if they are, overwrite them and update the manifest file per file added
-    for(let i = 0; i < ArraySourceLen; i++){
+    for(let i = 0; i < ArraySourceLenMerge; i++){
 
         //first checks if file exists (if directory does not exist must create directories along the way)
         let filePathSearch = SourceFiles[i][0]; //file path from manifest (location of T)
@@ -1224,7 +1224,7 @@ function getfilesManifest(repoDir, manifestDir){
             //now add the path and check sum to the entire Folder
             manifestFilesR.push(FileSum);
 
-            ArraySourceLen += 1;
+            ArraySourceLenMerge += 1;
         }
     }  
 
