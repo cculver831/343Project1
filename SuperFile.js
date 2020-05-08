@@ -4,10 +4,12 @@
 
 
 
-//Createbtn.addEventListener("click", function(){
-//  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
-//});
-copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target');
+Createbtn.addEventListener("click", function(){
+ document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
+ copyFiles(DestFolder.value,targFolder.value);
+});
+
+
 
 
 const fs = require('fs');
