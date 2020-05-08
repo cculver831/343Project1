@@ -444,7 +444,7 @@ var ArraySourceLen;
 function getProjectTree(UpSourceTreeDir){
 
     //read files from the source file (is var so that the variable can be used globally aka outside of the method)
-    var readFile = returnAllFilesInDirectory(String(UpSourceTreeDir));
+    let readFile = returnAllFilesInDirectory(String(UpSourceTreeDir));
     ArraySourceLen = readFile.length;
     return readFile;
 }
@@ -520,7 +520,7 @@ function createManifestFile(RepositoryDir){
     let RepLatestMani = getLatestManifestNum(String(RepositoryDir));
 
     //creates a new manifest file in the repository
-    var location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(Number(RepLatestMani) + 1) + ".rc" )
+    let location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(Number(RepLatestMani) + 1) + ".rc" )
     fs.appendFile(location, "Commit " + ((Number(RepLatestMani)) + 1)  + ".source:\n", function (err) {
 
         //throws error if could not append file  
@@ -541,19 +541,10 @@ function manifestFile(RepositoryDir)
     let RepLatestMani = getLatestManifestNum(String(RepositoryDir));
 
     //creates a new manifest file in the repository
-    var location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(RepLatestMani) + ".rc" )
+    let location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(RepLatestMani) + ".rc" )
     return location;
 }
 
-
-
-//exports the function
-module.exports = function(SourceFolder,Repository) {
-    return {
-        Result : copyFilesToRepository(SourceFolder,Repository),
-        Location : manifestFile(Repository)
-    };
-};
 
 
 //==================================================================================================================================
