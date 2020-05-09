@@ -147,8 +147,8 @@ function CreateArtifact(filePath){
 }
 
 // export the function through node.jd to take in an argument for file path and return a string accordingly
-//module.exports = function(FilePath) {
-//  return {
-//    getArtifact : CreateArtifact(FilePath)
-//  };
+module.exports = function(FilePath) {
+  return {
+    getArtifact : CreateArtifact(FilePath)
+  };
 };

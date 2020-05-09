@@ -194,7 +194,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
             manifestFiles.push([filePathSearch, Path_aid]);
         }
     }
-
+    
     //create Manifest
     let manifestLocation = createManifestFile(repoLoc);
     
@@ -296,4 +296,4 @@ function getfilesManifest(repoDir, manifestDir){
 
 
 
-//MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '.man10.rc', "commands");
+MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '.man2.rc', "commands");
