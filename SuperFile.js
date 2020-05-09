@@ -1134,7 +1134,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
 			});
 
 			//access artifactRunner to use getArtifact
-			let artifact = require('./ArtifactRunner')(String(filePathSearch));
+			let artifact = require('./ArtifactRunner')(String(manifestIDPath));
 			
 			//get the artifact of filePathSearch
 			let Path_aid = artifact.getArtifact;

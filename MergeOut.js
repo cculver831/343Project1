@@ -176,7 +176,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
 
         //then if it doesnt exist, copy it over
         else{
-
+            
             //copy files form R to T
             fs.copyFile(manifestIDPath, filePathSearch, (err) => {
             
@@ -185,16 +185,17 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
             });
 
             //access artifactRunner to use getArtifact
-            let artifact = require('./ArtifactRunner')(String(filePathSearch));
+            let artifact = require('./ArtifactRunner')(String(manifestIDPath));
             
             //get the artifact of filePathSearch
             let Path_aid = artifact.getArtifact;
 
             //add the new file path to the manifest array
             manifestFiles.push([filePathSearch, Path_aid]);
+
         }
     }
-    
+
     //create Manifest
     let manifestLocation = createManifestFile(repoLoc);
     
@@ -296,4 +297,4 @@ function getfilesManifest(repoDir, manifestDir){
 
 
 
-MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '.man2.rc', "commands");
+//MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '.man2.rc', "commands");
