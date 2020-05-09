@@ -3,11 +3,6 @@
 //=====================================================================================================================================
 
 
-
-//Createbtn.addEventListener("click", function(){
-//  document.getElementById("Test").innerHTML += "Test from CreateScript: " + targFolder.value + " and " + Destfolder.value;
-//});
-
 //create repo ---
 //copyFiles('C:\\Users\\steve\\Desktop\\Source','C:\\Users\\steve\\Desktop\\Target'); // project 1 works
 
