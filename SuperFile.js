@@ -587,185 +587,178 @@ function manifestFile(RepositoryDir)
 		//Check if the argument passed into the manifest is a file is a valid manifest file
 		if(manif.slice(-2) == 'rc')
 		{
-				// read contents of the file
-				let data = fs.readFileSync(repo + "\\.Temp\\" + manif, 'UTF-8');
-				let lines = data.split(/\r?\n/);
+			// read contents of the file
+			let data = fs.readFileSync(repo + "\\.Temp\\" + manif, 'UTF-8');
+			let lines = data.split(/\r?\n/);
 
-				// Loops through the data in the confirmed manifest file and carry logic accordingly
-				for(let i = 0; i < lines.length; i++)
+			// Loops through the data in the confirmed manifest file and carry logic accordingly
+			for(let i = 0; i < lines.length; i++)
+			{
+				let line = lines[i];
+				// Check if the first letter of the line is P for the file 
+				if(line[0] == "P")
 				{
-						let line = lines[i];
-						// Check if the first letter of the line is P for the file 
-						if(line[0] == "P")
+					let comp = line.split("=");
+					console.log(comp);
+					let folders = comp[1].split("\\");
+					folders.splice(0,1);
+					let name = folders.pop();
+					// Loop through each components folder of the path and ger rid of
+					for(let index = 0; index < folders.length; index++)
+					{
+						// Add the directory folders with the last folders, ending result will be the full path of the folder
+						if(index != 0)
 						{
-								let comp = line.split("=");
-								console.log(comp);
-								let folders = comp[1].split("\\");
-								folders.splice(0,1);
-								let name = folders.pop();
-								// Loop through each components folder of the path and ger rid of
-								for(let index = 0; index < folders.length; index++)
-								{
-										// Add the directory folders with the last folders, ending result will be the full path of the folder
-										if(index != 0)
-										{
-												folders[index] = folders[index-1] + "\\" +  folders[index];
-										}
-								}
-
-								console.log(folders);
-								// Make the folder indiviually with the given path from the beginning to end
-								for(let a = 0; a < folders.length; a++)
-								{
-										if (!fs.existsSync(dest + "\\" + folders[a])){
-												fs.mkdirSync(dest + "\\" + folders[a]);
-										}
-								}
-								
-								//copy files to those newly created folders
-								fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
-										//throws error if could not copy file to destination  
-									if (err) throw err;
-								});
-
+							folders[index] = folders[index-1] + "\\" +  folders[index];
 						}
-				}   
-				console.log("Completed Command");
+					}
+
+					console.log(folders);
+					// Make the folder indiviually with the given path from the beginning to end
+					for(let a = 0; a < folders.length; a++)
+					{
+						if (!fs.existsSync(dest + "\\" + folders[a])){
+							fs.mkdirSync(dest + "\\" + folders[a]);
+						}
+					}
+					
+					//copy files to those newly created folders
+					fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
+						//throws error if could not copy file to destination  
+						if (err) throw err;
+					});
+
+				}
+			}   
+			console.log("Completed Command");
 		}
 		// else if to check if the user passed in a valid foratted label
 		else if(manif[0] == '|')
 		{
-				for(let i = 0; i < files.length; i++)
+			for(let i = 0; i < files.length; i++)
+			{
+				if(files[i].slice(-2) == "rc")
 				{
-						if(files[i].slice(-2) == "rc")
+					// read contents of the file
+					let data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
+					let lines = data.split(/\r?\n/);
+					//check is the first line of the manifest
+					let check = lines[0];
+					if(check[0] == '|')
+					{
+						// split out the first lines to check if there's any labels
+						let labels = check.split("|");
+						// for loops to check if the labels the user inputted in the manifest file
+						for(let i = 0; i < labels.length; i++)
 						{
-								// read contents of the file
-								let data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
-								let lines = data.split(/\r?\n/);
-								//check is the first line of the manifest
-								let check = lines[0];
-								if(check[0] == '|')
+							if(labels[i] != "" &&  "|"+ labels[i] == manif)
+							{
+
+								// go through each lines to check for artifact name and file data
+								for(let i = 0; i < lines.length; i++)
 								{
-										// split out the first lines to check if there's any labels
-										let labels = check.split("|");
-										// for loops to check if the labels the user inputted in the manifest file
-										for(let i = 0; i < labels.length; i++)
+									let line = lines[i];
+									// Check if the first letter of the line is P for the file 
+									if(line[0] == "P")
+									{
+										let comp = line.split("=");
+										console.log(comp);
+										let folders = comp[1].split("\\");
+										folders.splice(0,1);
+										let name = folders.pop();
+										// Loop through each components folder of the path and ger rid of
+										for(let index = 0; index < folders.length; index++)
 										{
-												if(labels[i] != "" &&  "|"+ labels[i] == manif)
-												{
-
-														// go through each lines to check for artifact name and file data
-														for(let i = 0; i < lines.length; i++)
-														{
-																let line = lines[i];
-																// Check if the first letter of the line is P for the file 
-																if(line[0] == "P")
-																{
-																		let comp = line.split("=");
-																		console.log(comp);
-																		let folders = comp[1].split("\\");
-																		folders.splice(0,1);
-																		let name = folders.pop();
-																		// Loop through each components folder of the path and ger rid of
-																		for(let index = 0; index < folders.length; index++)
-																		{
-																				// Add the directory folders with the last folders, ending result will be the full path of the folder
-																				if(index != 0)
-																				{
-																						folders[index] = folders[index-1] + "\\" +  folders[index];
-																				}
-																		}
-																		
-																		console.log(folders);
-																		// Make the folder indiviually with the given path from the beginning to end
-																		for(let a = 0; a < folders.length; a++)
-																		{
-																				if (!fs.existsSync(dest + "\\" + folders[a])){
-																						fs.mkdirSync(dest + "\\" + folders[a]);
-																				}
-																		}
-																		//copy files to those newly created folders
-																		fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
-																				//throws error if could not copy file to destination  
-																		if (err) throw err;
-																		});
-
-																}
-														}   
-														console.log("Completed Command");
-												}
-												
+											// Add the directory folders with the last folders, ending result will be the full path of the folder
+											if(index != 0)
+											{
+												folders[index] = folders[index-1] + "\\" +  folders[index];
+											}
 										}
-								}
-								else
-								{
-										console.log("there was no valid label or valid manifest file")
-								}
+																		
+										console.log(folders);
+										// Make the folder indiviually with the given path from the beginning to end
+										for(let a = 0; a < folders.length; a++)
+										{
+											if (!fs.existsSync(dest + "\\" + folders[a])){
+												fs.mkdirSync(dest + "\\" + folders[a]);
+											}
+										}
+										//copy files to those newly created folders
+										fs.copyFile(String(repo + "\\.Temp\\" + comp[0]), String(dest + "\\" + folders[folders.length-1] + "\\" + name), (err) => {
+											//throws error if could not copy file to destination  
+										if (err) throw err;
+										});
+
+									}
+								}   
+								console.log("Completed Command");
+							}
+												
 						}
+					}
+					else
+					{
+						console.log("there was no valid label or valid manifest file")
+					}
 				}
-					
+			}		
 		}
-			
-
-			
-
-
 	} catch (err) {
 		console.error(err);
 	}
-		
- 
- }
+}
  
  
  function getManifest(repo, manif)
  {
 
-		const fs = require('fs');
-		const path = require('path');
+	const fs = require('fs');
+	const path = require('path');
 
-		 let files = fs.readdirSync(String(repo + "\\.Temp")); 
-		 try{
-				 if(manif.slice(-2) == 'rc')
-				 {
-						 // return manifest
-						 return repo + "\\.Temp\\" + manif;
-				 }
-				 else if(manif[0] == '|')
-				 {
-						 for(let i = 0; i < files.length; i++)
-						 {
-								 if(files[i].slice(-2) == "rc")
-								 {
-										 // read contents of the file
-										 const data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
-										 let lines = data.split(/\r?\n/);
-										 //check is the first line of the manifest
-										 let check = lines[0];
-										 if(check[0] == '|')
-										 {
-												 // split out the first lines to check if there's any labels
-												 let labels = check.split("|");
-												 // for loops to check if the labels the user inputted in the manifest file
-												 for(let x = 0; x < labels.length; x++)
-												 {
-														 if(labels[x] != "" &&  "|"+ labels[x] == manif)
-														 {
-																 return repo + "\\.Temp\\" + files[i];
-														 }
-												 }
-										 }
-								 }
-						 }
-				 }
-				 else{
-						 console.log("invalid manifest file or label");
-						 throw console.error();
-				 }
-		 }
-		 catch (err) {
-				 console.error(err);
-		 }
+	let files = fs.readdirSync(String(repo + "\\.Temp")); 
+	try
+	{
+		if(manif.slice(-2) == 'rc')
+		{
+			// return manifest
+			return repo + "\\.Temp\\" + manif;
+		}
+		else if(manif[0] == '|')
+		{
+			for(let i = 0; i < files.length; i++)
+			{
+				if(files[i].slice(-2) == "rc")
+				{
+					// read contents of the file
+					const data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
+					let lines = data.split(/\r?\n/);
+					//check is the first line of the manifest
+					let check = lines[0];
+					if(check[0] == '|')
+					{
+						// split out the first lines to check if there's any labels
+						let labels = check.split("|");
+						// for loops to check if the labels the user inputted in the manifest file
+						for(let x = 0; x < labels.length; x++)
+						{
+							if(labels[x] != "" &&  "|"+ labels[x] == manif)
+							{
+								return repo + "\\.Temp\\" + files[i];
+							}
+						}
+					}
+				}
+			}
+		}
+		else{
+			console.log("invalid manifest file or label");
+			throw console.error();
+		}
+	}
+	catch (err) {
+			console.error(err);
+	}
  }
 
 
@@ -811,60 +804,60 @@ function addLabel(Mloc, newLabel){
 	let labels;
 	//get data from text file
 	try {
-			// read contents of the file
-			let data = fs.readFileSync(Mloc, 'UTF-8');
+		// read contents of the file
+		let data = fs.readFileSync(Mloc, 'UTF-8');
 
-			// split the contents by new line
-			let lines = data.split(/\r?\n/);
+		// split the contents by new line
+		let lines = data.split(/\r?\n/);
+		
+		//print the array to check if everything seems correct
+
+		//check is the first line of the manifest
+		let check = lines[0];
+		//if labels exist, add new label given
+		if(check[0] == '|'){
+
+			//add new label--------------replace label here
+			lines[0] = lines[0] + "|" + newLabel + "\n";//changed input.value -> newLabel
 			
-			//print the array to check if everything seems correct
+			//replace first line
+			fs.writeFile(Mloc, (lines[0]), function (err) {
+					if (err) throw err;
+			});
+			
 
-			//check is the first line of the manifest
-			let check = lines[0];
-			//if labels exist, add new label given
-			if(check[0] == '|'){
-
-					//add new label--------------replace label here
-					lines[0] = lines[0] + "|" + newLabel + "\n";//changed input.value -> newLabel
-					
-					//replace first line
-					fs.writeFile(Mloc, (lines[0]), function (err) {
-							if (err) throw err;
-					});
-					
-
-					//add the rest of lines
-					let manifestData = "";
-					let i;
-					for(i = 1; i < lines.length; i++) {
-							//dont insert new line when at the last loop
-							if(i == lines.length - 1){
-									lines[i] = lines[i];
-									manifestData += lines[i];  
-							}
-							else{
-									lines[i] = lines[i] + "\n";
-									manifestData += lines[i];
-							}
-							
-					};
-					fs.appendFile(Mloc, manifestData, function (err) {
-							if (err) throw err;
-					});
-			}
-			//if there is no labels, then prepend
-			else{
-					//----------replace label here
-					labels = "|" + newLabel + "\n"; //changed input.value -> newLabel
-					prependFile(Mloc, labels, function (err) {
-							if (err) {
-									// Error
-									console.log("Couldnt add")
-							}
-					});
-			}
-			} catch (err) {
-					console.error(err);
+			//add the rest of lines
+			let manifestData = "";
+			let i;
+			for(i = 1; i < lines.length; i++) {
+				//dont insert new line when at the last loop
+				if(i == lines.length - 1){
+					lines[i] = lines[i];
+					manifestData += lines[i];  
+				}
+				else{
+					lines[i] = lines[i] + "\n";
+					manifestData += lines[i];
+				}					
+			};
+			fs.appendFile(Mloc, manifestData, function (err) {
+					if (err) throw err;
+			});
+		}
+		//if there is no labels, then prepend
+		else{
+			//----------replace label here
+			labels = "|" + newLabel + "\n"; //changed input.value -> newLabel
+			prependFile(Mloc, labels, function (err) {
+				if (err) {
+					// Error
+					console.log("Couldnt add")
+				}
+			});
+		}
+	} 
+	catch (err) {
+		console.error(err);
 	}
 }
 
@@ -891,20 +884,20 @@ function Listfunc(manifest)
 {
 
 
-		const fs = require('fs')
-		let data = fs.readFileSync(manifest, 'UTF-8');
+	const fs = require('fs')
+	let data = fs.readFileSync(manifest, 'UTF-8');
 
-		// split the contents by new line
-		let lines = data.split(/\r?\n/);
-		//Variables to access and mainttain listings    
+	// split the contents by new line
+	let lines = data.split(/\r?\n/);
+	//Variables to access and mainttain listings    
 
-		console.log("Displaying manifest file!")
-		
-		//Loop for Manifest to be printed out
-		for(let i = 0; i < lines.length; i++)
-				{
-						console.log(lines[i])
-				}
+	console.log("Displaying manifest file!")
+	
+	//Loop for Manifest to be printed out
+	for(let i = 0; i < lines.length; i++)
+	{
+		console.log(lines[i])
+	}
 }
 //==================================================================================================================================
 //==================================================================================================================================
