@@ -1,3 +1,6 @@
+// Chloe Culver Hanson Nguyen Steven Centeo
+// Completed 3/29/20
+// This is the Main js file that is used as a temporary UI
 const readline = require("readline");
 const rl = readline.createInterface({
     input: process.stdin,
