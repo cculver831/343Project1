@@ -2,7 +2,7 @@ CECS 343 section 03
 Create Repository
 Team Name: TS(Team Success)
 
-Intro: Create a repository for the given project source tree (including a ï¿½snapshotï¿½ of ï¿½allï¿½ its files) within the project.
+Intro: Create a repository for the given project source tree (including a “snapshot” of “all” its files) within the project.
 
 Contents: (File names in the .zip submission).
 
@@ -24,10 +24,7 @@ contents to be copied and documented with a manifest as well as a date and time 
 
 
 Features: 
-	-Flexible repo system that allows any folder to be copied to any destination
-	-Labeling Feature to name and keep track of Commits
-	-Check-In command to allow changes to be made to existing repo
-	-Check-Out Command to trnaslate ArtifactID to normal file. I.e. the ability to reset to a previous commit
+	Flexible repo system that allows any folder to be copied to any destination
 Known Bugs:
     N/A
 Instructions: 
@@ -41,5 +38,3 @@ Instructions:
 3) You will then receive information detailing where your documents have been saved (i.e. the manifest file)
 
 4) press CRTL+C to exit the program
-
-5) Run File again for other Features i.e. Check-In Check-Out
