@@ -1,9 +1,4 @@
 
-// CheckInbtn.addEventListener("click", function(){
-//   document.getElementById("Test").innerHTML += "Test for Check InScript";
-// });
-
-
 
 const fs = require('fs');
 const path = require('path');

@@ -57,12 +57,12 @@ function copyFiles(sourceFolder,targetFolder)
     
 }
 
-//module.exports = function(SourceFolder,TargetFolder) {
-//  return {
-//      Result : copyFiles(SourceFolder,TargetFolder)
-//  };
-//};
-//
+module.exports = function(SourceFolder,TargetFolder) {
+ return {
+     Result : copyFiles(SourceFolder,TargetFolder)
+ };
+};
+
 
 //gets content of a file due to its path
 function getContent(filePath){
