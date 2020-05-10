@@ -19,6 +19,38 @@ let ArraySourceLen = 0; // will be the length of the manifest array
 //note that all these are directories not the actal file name
 function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
 
+    if(R_ManifestLoc[0] == '|')
+    {
+        let files = fs.readdirSync(String(repo + "\\.Temp")); 
+        // read contents of the file
+        for(let i = 0; i < files.length; i++)
+        {
+            
+            if(files[i].slice(-2) == "rc")
+            {
+                // read contents of the file
+                const data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
+                let lines = data.split(/\r?\n/);
+                //check is the first line of the manifest
+                let check = lines[0];
+                if(check[0] == '|')
+                {
+                    
+                    // split out the first lines to check if there's any labels
+                    let labels = check.split("|");
+                    // for loops to check if the labels the user inputted in the manifest file
+                    for(let i2 = 0; i2 < labels.length; i2++)
+                    {
+                        if(labels[i2] != "" &&  "|"+ labels[i2] == R_ManifestLoc)
+                        {
+                            R_ManifestLoc = files[i];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //gets the files from the manifest file and saves into an array
     //[[file path,artifact_id, manifest_path],[],[],[],[],[],[],[]] this array is the files of the manifest file
     let SourceFiles = getfilesManifest(repoLoc, R_ManifestLoc);
