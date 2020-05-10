@@ -1,6 +1,3 @@
-// Chloe Culver Hanson Nguyen Steven Centeo
-// Completed 3/29/20
-// This is the Main js file that is used as a temporary UI
 const readline = require("readline");
 const rl = readline.createInterface({
     input: process.stdin,
@@ -14,7 +11,7 @@ let loop = true;
 
 
 //while loop that asks for user input of their commands
-rl.question("Welcome to Team Success VCS!! please enter a command (possible commands are:(create-repo, check-in, check-out)): ",function(command) {
+rl.question("Welcome to Team Success VCS!! please enter a command (possible commands are:(create-repo, check-in, check-out, merge-in, merge-out)): ",function(command) {
 
     //if the command is create repo, create the repository
     if(command == "create-repo"){
@@ -93,5 +90,44 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                 });
             });
         });
+    }
+    else if(command == "merge-in"){
+        rl.question("Please enter the path of the Source Folder: ", function(sourceFolder) {
+            rl.question("Please enter the Repository(target) Folder Destination: ", function(targetFolder) {
+                console.log(`the repository folder ${targetFolder} has been updated`);
+                
+                let checkIn = require('./CheckIn')(sourceFolder,targetFolder);
+                checkIn.Result;
+                console.log('the repository has been updated!');
+
+                reporitoryFolder = targetFolder;
+                sourceFold = sourceFolder;
+                answer = "";
+
+
+                rl.question("Would you like to add a label to the manifest file?(Y/N)", function(answer)
+                {
+                    if(answer=="Y" || answer == "y")
+                    {
+                        rl.question("Enter the name of the label: ", function(label)
+                        {
+                            let Label = require("./Label")(checkIn.Location, label);
+                            console.log("Added label " + label + " to " + checkIn.Location + "\n");
+                            let Listings = require("./Listings")(checkIn.Location);
+                            Listings.DataListing;
+                        });
+                    }
+                });
+                
+                
+            });
+        });
+    }
+    else if(command == "merge-out")
+    {
+
+    }
+    else{
+
     }
 });
