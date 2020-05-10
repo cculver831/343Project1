@@ -39,7 +39,7 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
             rl.question("Please enter the Repository(target) Folder Destination: ", function(targetFolder) {
                 console.log(`the repository folder ${targetFolder} has been updated`);
                 
-                let checkIn = require('./CheckIn')(sourceFolder,targetFolder);
+                let checkIn = require('./CheckIn')(sourceFolder,targetFolder, "check in");
                 checkIn.Result;
                 console.log('the repository has been updated!');
 
@@ -60,6 +60,7 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                             Listings.DataListing;
                         });
                     }
+
                 });
 
 
@@ -87,6 +88,7 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
 
                     reporitoryFolder = targetFolder;
                     sourceFold = sourceFolder;
+
                 });
             });
         });
@@ -96,7 +98,7 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
             rl.question("Please enter the Repository(target) Folder Destination: ", function(targetFolder) {
                 console.log(`the repository folder ${targetFolder} has been updated`);
                 
-                let checkIn = require('./CheckIn')(sourceFolder,targetFolder);
+                let checkIn = require('./CheckIn')(sourceFolder,targetFolder, "merge in");
                 checkIn.Result;
                 console.log('the repository has been updated!');
 
@@ -117,6 +119,7 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                             Listings.DataListing;
                         });
                     }
+
                 });
                 
                 
@@ -149,8 +152,10 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                                 console.log("Added label " + label + " to " + MergeOut.loc + "\n");
                                 let Listings = require("./Listings")(MergeOut.loc);
                                 Listings.DataListing;
+
                             });
                         }
+
                     });
 
                 });
@@ -158,9 +163,6 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                 
             });
         });
-    }
-    else if (command == "merge-in"){
-        
     }
 });
 

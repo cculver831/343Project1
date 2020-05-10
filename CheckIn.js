@@ -33,7 +33,7 @@ function getProjectTree(UpSourceTreeDir){
 //the files existing in the repository. If the files already exist in there, it gets overwritten (also takes labels into account)
 //additionally, it creates a new manifest file and copies all contents copied and overwritten into the manifest file along with the date/time
 //and command used to run the check in
-function copyFilesToRepository(UpSourceTreeDir, RepositoryDir){
+function copyFilesToRepository(UpSourceTreeDir, RepositoryDir, command){
     
     //gets the files from the source
     let SourceFiles = getProjectTree(UpSourceTreeDir);
@@ -73,8 +73,8 @@ function copyFilesToRepository(UpSourceTreeDir, RepositoryDir){
     });
 
     //append the command line and the arguments into the manifest
-    let command = "Command: check-in, " + UpSourceTreeDir + ", " + RepositoryDir;
-    fs.appendFile(location, command + "\n", function (err) {
+    let commandl = "Command:" + command +  ", " + UpSourceTreeDir + ", " + RepositoryDir;
+    fs.appendFile(location, commandl + "\n", function (err) {
         if (err) throw err;
     });
 }
@@ -101,7 +101,6 @@ function createManifestFile(RepositoryDir){
 
     return location;
     
- document.getElementById("Checkinoutput").innerHTML += "Congratulations! CheckIn Complete";
 }
 
 function manifestFile(RepositoryDir)
@@ -117,9 +116,9 @@ function manifestFile(RepositoryDir)
 
 
 //exports the function
-module.exports = function(SourceFolder,Repository) {
+module.exports = function(SourceFolder,Repository, command) {
     return {
-        Result : copyFilesToRepository(SourceFolder,Repository),
+        Result : copyFilesToRepository(SourceFolder,Repository, command),
         Location : manifestFile(Repository)
     };
 };
