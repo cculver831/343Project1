@@ -217,5 +217,3 @@
          Location : getManifest(repo,manif)
      };
  };
- //Test function, no longer needed
- //CheckOut("D:\\343 Project\\Target", "D:\\343 Project\\Tree","|Test")

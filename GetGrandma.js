@@ -153,7 +153,7 @@
          let sourDate = new Date(sourceDate.substr(11,4),sourceMonth, sourceDate.substr(8,2), sourceDate.substr(16,2),sourceDate.substr(19,2), sourceDate.substr(22,2))
          console.log(sourDate)
          //Push the source file into Manif array if the source file is at a time before the manifest file
-         if(sourDate < manifDate)
+         if(sourDate <= manifDate)
          {
              //Push the path into the Manif array
              Manif.push(String(repo) + "\\.Temp\\" + ReadFilesSource.getManifestFiles[i])
