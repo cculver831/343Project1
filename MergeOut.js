@@ -21,7 +21,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
 
     if(R_ManifestLoc[0] == '|')
     {
-        let files = fs.readdirSync(String(repo + "\\.Temp")); 
+        let files = fs.readdirSync(String(repoLoc+ "\\.Temp")); 
         // read contents of the file
         for(let i = 0; i < files.length; i++)
         {
@@ -29,7 +29,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
             if(files[i].slice(-2) == "rc")
             {
                 // read contents of the file
-                const data = fs.readFileSync(repo + "\\.Temp\\" + files[i], 'UTF-8');
+                const data = fs.readFileSync(repoLoc + "\\.Temp\\" + files[i], 'UTF-8');
                 let lines = data.split(/\r?\n/);
                 //check is the first line of the manifest
                 let check = lines[0];
@@ -124,7 +124,7 @@ function MergeOut(repoLoc, T_BrancedRepoLoc, R_ManifestLoc, command){
             //if the paths are different then get grandma and rename the current wo with _MT and _MR
             // as well as getting the grandma version of it, named _GM
             else{
-                //steal professors social security
+                
                 let temppath = filePathSearch;
 
                 //rename target file (old) 
@@ -327,6 +327,20 @@ function getfilesManifest(repoDir, manifestDir){
 };
 
 
+function locationManifest(RepositoryDir){
+    let RepDirFiles = require('./ReadFiles')(String(RepositoryDir));
+    let RepLatestMani = RepDirFiles.latestManiFile;
+
+    //creates a new manifest file in the repository
+    var location = path.join(String(RepositoryDir) + "\\"  + ".Temp" + "\\" + ".man" + String(RepLatestMani) + ".rc" )
+    return location;
+
+}
 
 
-//MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '.man2.rc', "commands");
+module.exports = function(repo, dest, manif, command) {
+    return {
+        Result : MergeOut(repo, dest, manif, command),
+        loc: locationManifest(repo)
+    };
+};
