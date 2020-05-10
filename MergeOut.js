@@ -344,3 +344,5 @@ module.exports = function(repo, dest, manif, command) {
         loc: locationManifest(repo)
     };
 };
+
+//MergeOut('C:\\Users\\steve\\Desktop\\Target', 'C:\\Users\\steve\\Desktop\\Source', '.man2.rc', 'E');

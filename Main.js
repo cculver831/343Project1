@@ -131,7 +131,7 @@ rl.question("Welcome to Team Success VCS!! please enter a command (possible comm
                     
                     //MergeOut('C:\\Users\\steve\\Desktop\\Target','C:\\Users\\steve\\Desktop\\Source', '|FUCK YOU', "commands");
                     let MergeOut = require('./MergeOut')(sourceFolder, targetFolder, manifest, "merge-out, " + targetFolder + ", " + sourceFolder + ", " + manifest);
-                    MergeOut.Result;
+                    //MergeOut.Result;
                     console.log('the target has been updated!');
 
                     reporitoryFolder = targetFolder;
